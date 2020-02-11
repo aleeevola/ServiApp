@@ -14,6 +14,6 @@
     <string name="buscar_servicios">Buscar servicios</string>
     <string name="ver_mapa">Ver Mapa</string>
     <string name="recibir_notificaciones">Recibir notificaciones</string>
-
+    <string name="zona_de_trabajo">Zona de trabajo:</string>
 
 </resources>
