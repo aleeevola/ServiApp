@@ -16,19 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.tpappsmoviles.serviapp.R;
 
 public class MainActivity extends AppCompatActivity {
-    private EditText nombre;
-    private EditText clave;
-    private EditText clave2;
-    private EditText correo;
-    private EditText tarjeta;
-    private EditText ccv;
-    private EditText vtoTarjeta;
-    private EditText aliasCBU;
-    private EditText CBU;
-    private RadioGroup groupTipoCuenta;
-    private RadioButton tipoCuenta;
-    private Switch vendedor;
-    private SeekBar seekCredito;
+    private Button btnFavoritos;
+    private Button btnBuscarServicios;
+    private Button btnVerMapa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
