@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity" android:parentActivityName=".activity.Login"/>
+        <activity android:name=".activity.ListaFavorios"  android:parentActivityName=".activity.MainActivity"/>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.tpappsmoviles.serviapp.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         btnFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  Intent intentFavoritos = new Intent(this , MainActivity.class);
-              //  startActivity(intentFavoritos);
+                Intent intentFavoritos = new Intent(view.getContext() , ListaFavorios.class);
+                startActivity(intentFavoritos);
                 }
         });
 
