@@ -39,13 +39,18 @@ public class Login extends AppCompatActivity {
             loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    loadingProgressBar.setVisibility(View.VISIBLE);
-                    if(esTienda.isChecked()){
-                        iniciarSesionTienda(usuarioEditText.getText().toString(), contraseñaEditText.getText().toString());
-                    }
-                    else {
-                        Intent i1 = new Intent(v.getContext(), MainActivity.class);
-                        startActivity(i1);
+                    String usuario = usuarioEditText.getText().toString();
+                    if(usuario!=null) {
+                        loadingProgressBar.setVisibility(View.VISIBLE);
+                        if (esTienda.isChecked()) {
+                            iniciarSesionTienda(usuario, contraseñaEditText.getText().toString());
+                        } else {
+                            Intent i1 = new Intent(v.getContext(), MainActivity.class);
+                            i1.putExtra("usuario", usuario);
+                            startActivity(i1);
+                        }
+                    } else {
+                        showToast("Ingrese un usuario");
                     }
                 }
             });

@@ -1,11 +1,10 @@
 package domain;
 
 public enum Rubro {
-    BañoDeMascotas,
-    PaseadoresDePerros,
+    Mascotas,
     LavadoDeAutos,
     LimpiezaDePiletas,
-    Jardineros,
+    Jardinería,
     LimpiezaDeCasas,
     Plomería,
     Gasista,

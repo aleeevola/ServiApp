@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         btnFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //ACA HAY QUE BUSCAR EL USUARIO Y PASARLO PARA TENER LA LISTA DE FAVORITOS DE ESE USUARIO
                 Intent intentFavoritos = new Intent(view.getContext() , ListaFavorios.class);
                 startActivity(intentFavoritos);
                 }
