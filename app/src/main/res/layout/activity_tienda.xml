@@ -12,114 +12,206 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:background="@color/colorTextoInfoTienda">
 
-            <ImageView
-                android:id="@+id/imagenTienda"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="209dp"
-                tools:srcCompat="@tools:sample/backgrounds/scenic[1]" />
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imagenTienda"
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/perritos" />
+
+                <ImageView
+                    android:id="@+id/degrade"
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/degrade" />
+
+            </FrameLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:background="@color/colorTienda"
+                android:padding="15dp">
 
-                <TextView
-                    android:id="@+id/txtRubro"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="38dp"
-                    android:text="" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/txtRubroTienda"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="" />
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="@dimen/dimIconosInfoTienda"
+                        android:layout_height="@dimen/dimIconosInfoTienda"
+                        app:srcCompat="@android:drawable/ic_input_get"
+                        android:tint="@color/colorAccent"/>
+
+                    <TextView
+                        android:id="@+id/txtRubro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rubro: "
+                        android:textColor="@color/colorTextoInfoTienda"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="5dp"
+                        android:textSize="@dimen/dimInfoTienda"/>
+
+                    <TextView
+                        android:id="@+id/at_RubroTienda"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textSize="@dimen/dimInfoTienda"
+                        android:textColor="@color/colorTextoInfoTienda"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="5dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="@dimen/dimIconosInfoTienda"
+                        android:layout_height="@dimen/dimIconosInfoTienda"
+                        app:srcCompat="@android:drawable/stat_sys_speakerphone" />
+
+                    <Button
+                        android:id="@+id/at_btnLlamar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:text="+54 342 5118005"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/colorTextoInfoTienda"
+                        android:textSize="@dimen/dimInfoTienda"
+                        android:paddingLeft="5dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="@dimen/dimIconosInfoTienda"
+                        android:layout_height="@dimen/dimIconosInfoTienda"
+                        app:srcCompat="@android:drawable/ic_dialog_map" />
+
+                    <TextView
+                        android:id="@+id/at_Direccion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="hola"
+                        android:textColor="@color/colorTextoInfoTienda"
+                        android:textSize="@dimen/dimInfoTienda"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="5dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="@dimen/dimIconosInfoTienda"
+                        android:layout_height="@dimen/dimIconosInfoTienda"
+                        android:tint="@color/colorTextoInfoTienda"
+                        app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
+
+                    <TextView
+                        android:id="@+id/at_Horario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8:00 a 14:00"
+                        android:textColor="@color/colorTextoInfoTienda"
+                        android:textSize="@dimen/dimInfoTienda"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="5dp"/>
+
+                </LinearLayout>
+
             </LinearLayout>
-
-            <EditText
-                android:id="@+id/editDescripcion"
-                android:layout_width="match_parent"
-                android:layout_height="134dp"
-                android:ems="10"
-                android:editable="false"
-                android:gravity="start|top"
-                android:inputType="none" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="22dp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/txtCalificacion"
-                    android:layout_width="122dp"
-                    android:layout_height="39dp"
-                    android:layout_weight="1"
-                    android:text="@string/calificacion"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/txtNumCalificacion"
-                    android:layout_width="160dp"
-                    android:layout_height="37dp"
-                    android:layout_weight="1"
-                    android:text=""
-                    app:layout_constraintEnd_toStartOf="@+id/imgEstrellas"
-                    app:layout_constraintStart_toEndOf="@+id/txtCalificacion"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imgEstrellas"
-                    android:layout_width="138dp"
-                    android:layout_height="35dp"
-                    android:layout_weight="1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@android:drawable/star_big_on" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="29dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:background="@color/colorTextoInfoTienda"
+                android:padding="15dp">
 
-                <TextView
-                    android:id="@+id/txtTelefono"
-                    android:layout_width="24dp"
-                    android:layout_height="33dp"
-                    android:layout_weight="1"
-                    android:text="@string/telefono" />
-
-                <TextView
-                    android:id="@+id/txtNumTelefono"
+                <ImageView
+                    android:id="@+id/imgEstrellas"
                     android:layout_width="wrap_content"
-                    android:layout_height="33dp"
+                    android:layout_height="20dp"
                     android:layout_weight="1"
-                    android:text="" />
+                    app:srcCompat="@android:drawable/star_big_on"
+                    android:tint="@color/colorTienda"/>
 
-                <Button
-                    android:id="@+id/btnLlamar"
-                    android:layout_width="76dp"
-                    android:layout_height="29dp"
+                <TextView
+                    android:id="@+id/txtNumEstrellas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="" />
+                    android:text="3.1"
+                    android:textSize="@dimen/dimCalificacionTienda"
+                    android:textColor="@color/colorTienda"/>
 
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@android:drawable/stat_notify_chat"
+                    android:tint="@color/colorTienda"/>
+
+                <TextView
+                    android:id="@+id/txtOpiniones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="11 opiniones"
+                    android:textSize="@dimen/dimCalificacionTienda"
+                    android:textColor="@color/colorTienda"/>
             </LinearLayout>
 
-            <Space
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="24dp" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/top_line"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/txtServicios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Servicios"
+                    android:textSize="@dimen/dimTituloServicioTienda"
+                    android:textColor="@color/colorTienda"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/at_CardRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/txtZonaTrabajo"

@@ -41,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
         btnBuscarServicios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  Intent intentServicios = new Intent(this ,MainActivity.class);
-              //  startActivity(intentServicios);
+
+                Intent intentServicios = new Intent(view.getContext() ,TiendaPerfil.class);
+                startActivity(intentServicios);
             }
         });
 

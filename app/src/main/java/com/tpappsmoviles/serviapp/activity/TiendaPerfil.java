@@ -1,11 +1,12 @@
 package com.tpappsmoviles.serviapp.activity;
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,50 +16,82 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.Rubro;
+import domain.Servicio;
 import domain.Tienda;
 
-public class ListaFavorios extends AppCompatActivity {
+public class TiendaPerfil extends AppCompatActivity {
     private RecyclerView mRecyclerView;
-    private FavoritosRecyclerAdapter mAdapter;
+    private ServiciosRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public static List<Tienda> listaFavoritos=new ArrayList<>();
+    public static List<Servicio> listaServicios =new ArrayList<>();
+
+    private Tienda tienda= new Tienda();
+    private TextView rubro;
+    private Button telefono;
+    private TextView direccion;
+    private TextView horario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.recycler);
+
+        setContentView(R.layout.activity_tienda);
 
         //setSupportActionBar((Toolbar) findViewById(R.id.toolbarListFavoritos));
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("Tiendas favoritas");
+        actionBar.setTitle("Nombre tienda");
 
         //listaP = PlatoRepository.getInstance().getListaPlatos();
         //PlatoRepository.getInstance().listarPlatos(miHandler);
 
+        rubro =(TextView) findViewById(R.id.at_RubroTienda);
+        telefono = (Button) findViewById(R.id.at_btnLlamar);
+        direccion =(TextView) findViewById(R.id.at_Direccion);
+        horario =(TextView) findViewById(R.id.at_Horario);
+
         Tienda t1= new Tienda();
         t1.setNombre("Hola");
         t1.setRubro(Rubro.Mascotas);
+        t1.setTelefono(123456789);
+        t1.setDireccion("hernan cataneo");
         t1.setHorarioDeAtencion("8:00 a 12:00");
-        listaFavoritos.add(t1);
 
-        Tienda t2= new Tienda();
-        t2.setNombre("Ale");
-        t2.setRubro(Rubro.Albañil);
-        t2.setHorarioDeAtencion("12:00 a 13:00");
-        listaFavoritos.add(t2);
+        Servicio s1 = new Servicio();
+        s1.setDescripcion("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        s1.setNombre("Cortar pelo");
+        s1.setPrecio((float) 222);
+
+        Servicio s2 = new Servicio();
+        s2.setDescripcion("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        s2.setNombre("Bañar");
+        s2.setPrecio((float) 33);
 
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.CardRecycler);
+        listaServicios.add(s1);
+        listaServicios.add(s2);
+
+        tienda=t1;
+
+        setParametros();
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.at_CardRecycler);
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new FavoritosRecyclerAdapter(listaFavoritos);
+        mAdapter = new ServiciosRecyclerAdapter(listaServicios);
         mRecyclerView.setAdapter(mAdapter);
 
+    }
+
+    public void setParametros(){
+        rubro.setText(tienda.getRubro().toString());
+        telefono.setText(String.valueOf(tienda.getTelefono()));
+        direccion.setText(tienda.getDireccion());
+        horario.setText(tienda.getHorarioDeAtencion());
     }
 
     /*
