@@ -1,5 +1,7 @@
 package domain;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 
 public class Tienda {
@@ -11,7 +13,7 @@ public class Tienda {
     private String direccion;
     private String horarioDeAtencion;
     private Rubro rubro;
-    private int imagen;
+    private Bitmap imagen;
     private ArrayList<Servicio> servicios;
 
     public int getId() {
@@ -70,11 +72,11 @@ public class Tienda {
         this.rubro = rubro;
     }
 
-    public int getImagen() {
+    public Bitmap getImagen() {
         return imagen;
     }
 
-    public void setImagen(int imagen) {
+    public void setImagen(Bitmap imagen) {
         this.imagen = imagen;
     }
 
