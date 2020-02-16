@@ -1,7 +1,13 @@
 package com.tpappsmoviles.serviapp.activity;
 
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,11 +32,13 @@ public class TiendaPerfil extends AppCompatActivity {
 
     public static List<Servicio> listaServicios =new ArrayList<>();
 
+    //ESTA TIENDA ES PARA MOSTAR LOS DATOS
     private Tienda tienda= new Tienda();
     private TextView rubro;
     private Button telefono;
     private TextView direccion;
     private TextView horario;
+    private ImageView imagen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +59,20 @@ public class TiendaPerfil extends AppCompatActivity {
         telefono = (Button) findViewById(R.id.at_btnLlamar);
         direccion =(TextView) findViewById(R.id.at_Direccion);
         horario =(TextView) findViewById(R.id.at_Horario);
+        imagen= (ImageView) findViewById(R.id.at_imagenTienda);
 
+
+        /////////////
+        //CREO UNA TIENDA PARA MOSTRAR LOS DATOS,
+        //DEBE CARGARLOS DE LA BASE DE DATOS SUPONGO
+        //FALTA MOSTRAR LA FOTO
         Tienda t1= new Tienda();
         t1.setNombre("Hola");
         t1.setRubro(Rubro.Mascotas);
         t1.setTelefono(123456789);
         t1.setDireccion("hernan cataneo");
         t1.setHorarioDeAtencion("8:00 a 12:00");
+        //t1.setImagen();
 
         Servicio s1 = new Servicio();
         s1.setDescripcion("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
@@ -74,6 +89,7 @@ public class TiendaPerfil extends AppCompatActivity {
         listaServicios.add(s2);
 
         tienda=t1;
+        /////////////
 
         setParametros();
 
@@ -92,6 +108,7 @@ public class TiendaPerfil extends AppCompatActivity {
         telefono.setText(String.valueOf(tienda.getTelefono()));
         direccion.setText(tienda.getDireccion());
         horario.setText(tienda.getHorarioDeAtencion());
+        //imagen.setImageBitmap(tienda.getImagen());
     }
 
     /*

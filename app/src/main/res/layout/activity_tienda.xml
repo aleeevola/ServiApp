@@ -20,7 +20,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imagenTienda"
+                    android:id="@+id/at_imagenTienda"
                     android:layout_width="match_parent"
                     android:layout_height="210dp"
                     android:scaleType="centerCrop"
