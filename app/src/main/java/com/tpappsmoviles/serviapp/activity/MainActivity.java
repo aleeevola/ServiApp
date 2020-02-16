@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intentServicios = new Intent(view.getContext() ,TiendaPerfil.class);
+                Intent intentServicios = new Intent(view.getContext() ,EditarTiendaPerfil.class);
                 startActivity(intentServicios);
             }
         });

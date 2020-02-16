@@ -1,7 +1,15 @@
 package com.tpappsmoviles.serviapp.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,11 +21,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tpappsmoviles.serviapp.R;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,11 +54,13 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     private EditText horario;
     private EditText direccion;
     private ImageView imagen;
+    private Bitmap imagenBitmap;
 
     private Button btn_foto;
     private Button btn_mapa;
     private Button btn_guardar;
 
+    private static int RESULT_LOAD_IMAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +79,27 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         rubro =(Spinner) findViewById(R.id.ep_rubro);
         telefono = (EditText) findViewById(R.id.ep_telefono);
         direccion =(EditText) findViewById(R.id.ep_direccion);
+        imagen= (ImageView) findViewById(R.id.ep_imagen);
         //horario =(EditText) findViewById(R.id.at_Horario);
 
         btn_foto= (Button) findViewById(R.id.ep_btn_cargarfoto);
         btn_mapa= (Button) findViewById(R.id.ep_btn_zonatrabajo);
         btn_guardar= (Button) findViewById(R.id.ep_btn_guardar);
 
+        btn_foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                permisosGaleria();
+                selectImagen();
+            }
+        });
         btn_guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveParametros();
             }
         });
+
 
         rubro = (Spinner) findViewById(R.id.ep_rubro);
         rubro.setAdapter(new ArrayAdapter<Rubro>(this, android.R.layout.simple_spinner_item, Rubro.values()));
@@ -113,23 +139,41 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         tienda.setTelefono(Integer.parseInt(telefono.getText().toString()));
         //tienda.setHorarioDeAtencion();
         tienda.setDireccion(direccion.getText().toString());
-        //tienda.setImagen(imagen.);
+        tienda.setImagen(imagenBitmap);
         //tienda.setServicios();
 
         //guardar los cambios en tienda y despues actalizarlo en el servidor
         showToast("Datos guardados");
     }
 
-    /*
-    @Override
-    protected void onActivityResult(int requestCode, int
-            resultCode, @Nullable Intent data) {
-        if( resultCode== Activity.RESULT_OK){
-            if(requestCode==mAdapter.CODIGO_LISTA_PLATO){
-                mAdapter.notifyDataSetChanged();
+    public void selectImagen(){
+        /*Intent intent=new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        String[] mimeTypes = {"image/jpeg", "image/png"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);*/
+        Intent intent = new Intent(
+                Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        startActivityForResult(intent, RESULT_LOAD_IMAGE);
+    }
+
+    public void permisosGaleria(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        123);
             }
         }
-    }*/
+    }
 
 
     public void showToast(String txtToast){
@@ -137,22 +181,31 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         toast1.show();
     }
 
-    /*
-    Handler miHandler = new Handler(Looper.myLooper()){
-        @Override
-        public void handleMessage(Message m){
-            listaP = PlatoRepository.getInstance().getListaPlatos();
-            switch (m.arg1){
-                case PlatoRepository._CONSULTA_PLATO:
-                    mAdapter = new PlatoRecyclerAdapter(listaP,false);
-                    mRecyclerView.setAdapter(mAdapter);
-                    break;
-                case PlatoRepository._BORRADO_PLATO:
-                    mAdapter.notifyDataSetChanged();
-                    break;
-            }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            imagenBitmap=BitmapFactory.decodeFile(picturePath);
+            imagen.setImageBitmap(imagenBitmap);
+
         }
-    };*/
+
+
+    }
+
+
 
 
 }
