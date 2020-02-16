@@ -1,6 +1,7 @@
 package com.tpappsmoviles.serviapp.activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -45,13 +47,14 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     private ServiciosRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public static List<Servicio> listaServicios =new ArrayList<>();
+    public static ArrayList<Servicio> listaServicios =new ArrayList<>();
 
     private Tienda tienda= new Tienda();
     private EditText nombre;
     private Spinner rubro;
     private EditText telefono;
-    private EditText horario;
+    private EditText horaInicio;
+    private EditText horaFin;
     private EditText direccion;
     private ImageView imagen;
     private Bitmap imagenBitmap;
@@ -59,6 +62,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     private Button btn_foto;
     private Button btn_mapa;
     private Button btn_guardar;
+    private Button btn_agregarServicio;
 
     private static int RESULT_LOAD_IMAGE = 1;
 
@@ -80,11 +84,13 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         telefono = (EditText) findViewById(R.id.ep_telefono);
         direccion =(EditText) findViewById(R.id.ep_direccion);
         imagen= (ImageView) findViewById(R.id.ep_imagen);
-        //horario =(EditText) findViewById(R.id.at_Horario);
+        horaInicio =(EditText) findViewById(R.id.ep_horainicio);
+        horaFin =(EditText) findViewById(R.id.ep_horafin);
 
         btn_foto= (Button) findViewById(R.id.ep_btn_cargarfoto);
         btn_mapa= (Button) findViewById(R.id.ep_btn_zonatrabajo);
         btn_guardar= (Button) findViewById(R.id.ep_btn_guardar);
+        btn_agregarServicio= (Button) findViewById(R.id.ep_btn_agregarservicio);
 
         btn_foto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +106,12 @@ public class EditarTiendaPerfil extends AppCompatActivity {
             }
         });
 
+        btn_agregarServicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                agregarServicio();
+            }
+        });
 
         rubro = (Spinner) findViewById(R.id.ep_rubro);
         rubro.setAdapter(new ArrayAdapter<Rubro>(this, android.R.layout.simple_spinner_item, Rubro.values()));
@@ -129,7 +141,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         //horario.setText(tienda.getHorarioDeAtencion());
 
         listaServicios=tienda.getServicios();
-        mAdapter.notifyDataSetChanged();
+
 
     }
 
@@ -137,10 +149,10 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         tienda.setNombre(nombre.getText().toString());
         tienda.setRubro((Rubro) rubro.getSelectedItem());
         tienda.setTelefono(Integer.parseInt(telefono.getText().toString()));
-        //tienda.setHorarioDeAtencion();
+        tienda.setHorarioDeAtencion(horaInicio.getText().toString()+" a "+horaFin.getText().toString());
         tienda.setDireccion(direccion.getText().toString());
         tienda.setImagen(imagenBitmap);
-        //tienda.setServicios();
+        tienda.setServicios(listaServicios);
 
         //guardar los cambios en tienda y despues actalizarlo en el servidor
         showToast("Datos guardados");
@@ -203,6 +215,43 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         }
 
 
+    }
+
+    private void agregarServicio(){
+        // create an alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Nuevo servicio");
+        // set the custom layout
+        final View customLayout = getLayoutInflater().inflate(R.layout.alert_servicio, null);
+        builder.setView(customLayout);
+        // add a button
+        builder.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // send data from the AlertDialog to the Activity
+                EditText nombreServicio = customLayout.findViewById(R.id.as_nombre);
+                EditText descripcionServicio = customLayout.findViewById(R.id.as_descripcion);
+                EditText precioServicio = customLayout.findViewById(R.id.as_precio);
+
+                try{
+                Servicio servicioNuevo= new Servicio();
+                servicioNuevo.setNombre(nombreServicio.getText().toString());
+                servicioNuevo.setDescripcion(descripcionServicio.getText().toString());
+                servicioNuevo.setPrecio(Float.valueOf(precioServicio.getText().toString()));
+
+                listaServicios.add(servicioNuevo);
+                mAdapter.notifyDataSetChanged();
+
+                showToast(nombreServicio.getText().toString());
+                } catch (NumberFormatException e) {
+                    showToast("Campos nulos");
+                }
+
+            }
+        });
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 
