@@ -138,7 +138,6 @@ public class EditarTiendaPerfil extends AppCompatActivity {
 
     public void setParametros(){
         nombre.setText(tienda.getNombre());
-        nombre.setText("HOLA");
  /*       telefono.setText(String.valueOf(tienda.getTelefono()));
         direccion.setText(tienda.getDireccion());
         imagen.setImageBitmap(tienda.getImagen());
@@ -162,6 +161,8 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         tienda.setServicios(listaServicios);
 
         //guardar los cambios en tienda y despues actalizarlo en el servidor
+
+
         showToast("Datos guardados");
     }
 

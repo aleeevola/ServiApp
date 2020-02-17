@@ -22,8 +22,8 @@ public interface TiendaRest {
         @GET("/tiendas/")
         Call<Tienda> buscarTienda(@Query("nombre") String nombre);
 
-        @GET("tiendas/")
-        Call<Tienda> buscarTienda(@Query("id") Integer id);
+        @GET("tiendas/{id}")
+        Call<Tienda> buscarTienda(@Path("id") Integer id);
 
         @DELETE("tiendas/{id}")
         Call<Void> borrar(@Path("id") Integer id);

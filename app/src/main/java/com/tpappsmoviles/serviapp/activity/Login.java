@@ -43,7 +43,7 @@ public class Login extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     String usuario = usuarioEditText.getText().toString();
-                    if(usuario!=null) {
+                    if(!usuario.isEmpty()) {
                         loadingProgressBar.setVisibility(View.VISIBLE);
                         if (esTienda.isChecked()) {
                             iniciarSesionTienda(usuario, contraseñaEditText.getText().toString());
@@ -99,10 +99,10 @@ public class Login extends AppCompatActivity {
 
         private Boolean existeTienda(Tienda t){
     //        Log.d("Existe tienda ",t.toString());
-            if(t == null){
-                return false;
-            }else{
+            if(t!=null){
                 return true;
+            }else{
+                return false;
             }
         }
 
@@ -115,7 +115,7 @@ public class Login extends AppCompatActivity {
     Handler miHandler = new Handler(Looper.myLooper()){
         @Override
         public void handleMessage(Message m){
-            Log.d("APP SendMeal","Vuelve al handler "+m.arg1);
+            Log.d("APP SERVIAPP","Vuelve al handler " + m.arg1);
             switch (m.arg1){
                 case TiendaRepository._CONSULTA_TIENDA:
                     Log.d("APP Serviapp","consulta "+m.arg1);
@@ -126,7 +126,7 @@ public class Login extends AppCompatActivity {
                     startActivity(i);
                     break;
                 default:
-                    Log.d("DEFAULT BUSCRPLATO", "handler");
+                    Log.d("DEFAULT BUSCRTIENDA", "handler");
                     break;
             }
         }
