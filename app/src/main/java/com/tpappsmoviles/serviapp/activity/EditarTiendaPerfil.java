@@ -137,7 +137,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     }
 
     public void setParametros(){
-        nombre.setText(tienda.getNombre());
+//        nombre.setText(tienda.getNombre());
  /*       telefono.setText(String.valueOf(tienda.getTelefono()));
         direccion.setText(tienda.getDireccion());
         imagen.setImageBitmap(tienda.getImagen());

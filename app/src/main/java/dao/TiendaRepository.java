@@ -24,6 +24,7 @@ public class TiendaRepository {
     public static final int _UPDATE_TIENDA =2;
     public static final int _BORRADO_TIENDA =3;
     public static final int _CONSULTA_TIENDA =4;
+    public static final int _NOEXISTE_TIENDA =5;
     public static final int _ERROR_TIENDA =9;
 
     private static TiendaRepository _INSTANCE;
@@ -171,23 +172,32 @@ public class TiendaRepository {
 
     private Tienda tienda = new Tienda();
     public Tienda buscarTienda(final String nombre, final Handler h){
-        Call<Tienda> llamada = this.tiendaRest.buscarTienda(nombre);
-        llamada.enqueue(new Callback<Tienda>() {
+        Log.d("TiendaRepository", "ENTRO EN BUSCAR TIENDA");
+        Call<List<Tienda>> llamada = this.tiendaRest.buscarTienda(nombre);
+        llamada.enqueue(new Callback<List<Tienda>>() {
             @Override
-            public void onResponse(Call<Tienda> call, Response<Tienda> response) {
+            public void onResponse(Call<List<Tienda>> call, Response<List<Tienda>> response) {
+                Log.d("TiendaRepository", "RESPUESTA ON RESPONSE - CODIGO: "+ response.code());
                 if(response.isSuccessful()){
+                    Log.d("TiendaRepository", "RESPUESTA SUCCESSFUL");
                     Message m = new Message();
                     m.arg1 = _CONSULTA_TIENDA;
                     h.sendMessage(m);
-                    tienda = response.body();
-                    Log.d("TiendaRepository", tienda.getNombre());
+                    if(response.body().isEmpty()){
+                        tienda = null;
+                        m.arg1 = _NOEXISTE_TIENDA;
+                    } else {
+                        tienda = response.body().get(0);
+                        Log.d("TiendaRepository", tienda.getNombre());
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<Tienda> call, Throwable t) {
+            public void onFailure(Call<List<Tienda>> call, Throwable t) {
                 Message m = new Message();
                 m.arg1 = _ERROR_TIENDA;
+                Log.d("TiendaRepository", "FALLA" + t.getMessage());
                 h.sendMessage(m);
             }
 

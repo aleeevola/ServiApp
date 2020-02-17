@@ -1,50 +1,39 @@
 {
   "tiendas": [
     {
-      "id": 1,
-      "nombre": "Pepe",
-      "telefono": 0
-    },
-    {
-      "id": 2,
-      "nombre": "Jose",
-      "telefono": 0
-    },
-    {
-      "id": 3,
-      "nombre": "Ale",
-      "telefono": 0
-    },
-    {
-      "id": 4,
       "nombre": "Tienda1",
-      "telefono": 0
+      "telefono": 0,
+      "id": 1
     },
     {
-      "id": 5,
-      "nombre": "Aaa",
-      "telefono": 0
+      "nombre": "Tienda2",
+      "telefono": 0,
+      "id": 2
     },
     {
-      "id": 6,
-      "nombre": "Bbb",
-      "telefono": 0
+      "nombre": "Tienda3",
+      "telefono": 0,
+      "id": 3
     },
     {
-      "id": 7,
-      "nombre": "Pepe",
-      "telefono": 0
+      "nombre": "Tienda4",
+      "telefono": 0,
+      "id": 4
     },
     {
-      "id": 8,
-      "nombre": "A1",
-      "telefono": 0
+      "nombre": "Tienda5",
+      "telefono": 0,
+      "id": 5
     },
     {
-      "id": 9,
-      "nombre": "A2",
-      "telefono": 0
+      "nombre": "Tienda6",
+      "telefono": 0,
+      "id": 6
+    },
+    {
+      "nombre": "Tienda1",
+      "telefono": 0,
+      "id": 7
     }
-  ],
-  "servicios": []
+  ]
 }
