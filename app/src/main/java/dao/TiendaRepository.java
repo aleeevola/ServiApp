@@ -179,7 +179,8 @@ public class TiendaRepository {
                     Message m = new Message();
                     m.arg1 = _CONSULTA_TIENDA;
                     h.sendMessage(m);
-                    tienda = response.body();;
+                    tienda = response.body();
+                 //   Log.d("TiendaRepository", tienda.getNombre());
                 }
             }
 

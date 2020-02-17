@@ -1,0 +1,40 @@
+{
+  "tiendas": [
+    {
+      "id": 1,
+      "nombre": "Pepe",
+      "telefono": 0
+    },
+    {
+      "id": 2,
+      "nombre": "Jose",
+      "telefono": 0
+    },
+    {
+      "id": 3,
+      "nombre": "Ale",
+      "telefono": 0
+    },
+    {
+      "id": 4,
+      "nombre": "Tienda1",
+      "telefono": 0
+    },
+    {
+      "id": 5,
+      "nombre": "Aaa",
+      "telefono": 0
+    },
+    {
+      "id": 6,
+      "nombre": "Bbb",
+      "telefono": 0
+    },
+    {
+      "id": 7,
+      "nombre": "Pepe",
+      "telefono": 0
+    }
+  ],
+  "servicios": []
+}

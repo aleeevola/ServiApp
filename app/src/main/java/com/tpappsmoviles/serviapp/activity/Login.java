@@ -62,6 +62,7 @@ public class Login extends AppCompatActivity {
 
         private void iniciarSesionTienda(final String usuario, String contraseña){
             Tienda tienda = TiendaRepository.getInstance().buscarTienda(usuario,miHandler);
+ //           System.out.println("System out print tienda; " + tienda);
             if(!existeTienda(tienda)){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("Tienda inexistente. ¿Desea registrar la tienda "+ usuario + "?")
@@ -97,10 +98,11 @@ public class Login extends AppCompatActivity {
         }
 
         private Boolean existeTienda(Tienda t){
-            if(t != null){
-                return true;
-            }else{
+    //        Log.d("Existe tienda ",t.toString());
+            if(t == null){
                 return false;
+            }else{
+                return true;
             }
         }
 

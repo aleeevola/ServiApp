@@ -131,21 +131,21 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         int idTienda = extras.getInt("idTienda");
 
         tienda = TiendaRepository.getInstance().buscarTienda(idTienda,miHandler);
-            setParametros();
+        //    setParametros();
 
     }
 
     public void setParametros(){
-        nombre.setText(tienda.getNombre());
+ /*       nombre.setText(tienda.getNombre());
         telefono.setText(String.valueOf(tienda.getTelefono()));
         direccion.setText(tienda.getDireccion());
         imagen.setImageBitmap(tienda.getImagen());
-
+*/
         //poner que muestre el rubro que ya habia seleccionado
         //este falta tmb
         //horario.setText(tienda.getHorarioDeAtencion());
 
-        listaServicios=tienda.getServicios();
+      //  listaServicios=tienda.getServicios();
 
 
     }

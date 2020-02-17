@@ -11,6 +11,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface TiendaRest {
 
@@ -18,11 +19,11 @@ public interface TiendaRest {
         @GET("tiendas/")
         Call<List<Tienda>> buscarTodas();
 
-        @GET("tiendas/{nombre}")
-        Call<Tienda> buscarTienda(@Path("nombre") String nombre);
+        @GET("/tiendas/")
+        Call<Tienda> buscarTienda(@Query("nombre") String nombre);
 
-        @GET("tiendas/{id}")
-        Call<Tienda> buscarTienda(@Path("id") Integer id);
+        @GET("tiendas/")
+        Call<Tienda> buscarTienda(@Query("id") Integer id);
 
         @DELETE("tiendas/{id}")
         Call<Void> borrar(@Path("id") Integer id);
