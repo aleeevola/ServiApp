@@ -82,7 +82,7 @@ public class TiendaRepository {
     }
 
 
-    public void crearTienda(Tienda tienda, final Handler h){
+    public void crearTienda(final Tienda tienda, final Handler h){
         Call<Tienda> llamada = this.tiendaRest.crear(tienda);
         llamada.enqueue(new Callback<Tienda>() {
             @Override
@@ -95,6 +95,7 @@ public class TiendaRepository {
                     listaTiendas.add(response.body());
                     Message m = new Message();
                     m.arg1 = _ALTA_TIENDA;
+                    m.arg2 = tienda.getId();
                     h.sendMessage(m);
                 }
             }
@@ -191,6 +192,30 @@ public class TiendaRepository {
 
         });
     return tienda;
+    }
+
+    public Tienda buscarTienda(final Integer id, final Handler h){
+        Call<Tienda> llamada = this.tiendaRest.buscarTienda(id);
+        llamada.enqueue(new Callback<Tienda>() {
+            @Override
+            public void onResponse(Call<Tienda> call, Response<Tienda> response) {
+                if(response.isSuccessful()){
+                    Message m = new Message();
+                    m.arg1 = _CONSULTA_TIENDA;
+                    h.sendMessage(m);
+                    tienda = response.body();;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Tienda> call, Throwable t) {
+                Message m = new Message();
+                m.arg1 = _ERROR_TIENDA;
+                h.sendMessage(m);
+            }
+
+        });
+        return tienda;
     }
 
     public List<Tienda> getListaTiendas() {

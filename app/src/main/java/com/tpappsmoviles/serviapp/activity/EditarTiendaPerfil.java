@@ -9,6 +9,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
@@ -38,6 +41,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.TiendaRepository;
 import domain.Rubro;
 import domain.Servicio;
 import domain.Tienda;
@@ -123,11 +127,12 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         mAdapter = new ServiciosRecyclerAdapter(listaServicios);
         mRecyclerView.setAdapter(mAdapter);
 
-        //if (perfilExistente){
-        //Si el perfil existe tiene que cargar los campos
-        //Asignar el perfil a tienda que esta definido arriba de todo
-        //    setParametros();
-        //}
+        Bundle extras = getIntent().getExtras();
+        int idTienda = extras.getInt("idTienda");
+
+        tienda = TiendaRepository.getInstance().buscarTienda(idTienda,miHandler);
+            setParametros();
+
     }
 
     public void setParametros(){
@@ -255,6 +260,18 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     }
 
 
+    Handler miHandler = new Handler(Looper.myLooper()){
+        @Override
+        public void handleMessage(Message m){
+            switch (m.arg1){
+                case TiendaRepository._CONSULTA_TIENDA:
+
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
 
 }
