@@ -95,7 +95,7 @@ public class TiendaRepository {
                     listaTiendas.add(response.body());
                     Message m = new Message();
                     m.arg1 = _ALTA_TIENDA;
-                    m.arg2 = tienda.getId();
+                    m.arg2 = response.body().getId();
                     h.sendMessage(m);
                 }
             }
@@ -169,7 +169,7 @@ public class TiendaRepository {
 
 
 
-    private Tienda tienda = null;
+    private Tienda tienda = new Tienda();
     public Tienda buscarTienda(final String nombre, final Handler h){
         Call<Tienda> llamada = this.tiendaRest.buscarTienda(nombre);
         llamada.enqueue(new Callback<Tienda>() {
@@ -180,7 +180,7 @@ public class TiendaRepository {
                     m.arg1 = _CONSULTA_TIENDA;
                     h.sendMessage(m);
                     tienda = response.body();
-                 //   Log.d("TiendaRepository", tienda.getNombre());
+                    Log.d("TiendaRepository", tienda.getNombre());
                 }
             }
 

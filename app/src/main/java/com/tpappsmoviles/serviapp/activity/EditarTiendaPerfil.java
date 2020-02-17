@@ -14,6 +14,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -128,16 +129,17 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         Bundle extras = getIntent().getExtras();
-        int idTienda = extras.getInt("idTienda");
-
+        Integer idTienda = extras.getInt("ID_TIENDA");
+        Log.d("Id recuperado en EditarPerfil", idTienda.toString());
         tienda = TiendaRepository.getInstance().buscarTienda(idTienda,miHandler);
-        //    setParametros();
+            setParametros();
 
     }
 
     public void setParametros(){
- /*       nombre.setText(tienda.getNombre());
-        telefono.setText(String.valueOf(tienda.getTelefono()));
+        nombre.setText(tienda.getNombre());
+        nombre.setText("HOLA");
+ /*       telefono.setText(String.valueOf(tienda.getTelefono()));
         direccion.setText(tienda.getDireccion());
         imagen.setImageBitmap(tienda.getImagen());
 */
