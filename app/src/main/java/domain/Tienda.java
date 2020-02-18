@@ -19,15 +19,14 @@ public class Tienda {
     @SerializedName("nombre")
     @Expose
     private String nombre;
-    private String descripcion;
+//    private String descripcion;
     private int telefono;
     private String direccion;
     private String horarioDeAtencion;
     private Rubro rubro;
-    private ArrayList<Servicio> servicios;
+    private ArrayList<Servicio> servicios = new ArrayList<>();
 
     private String imagen64;
-
 
     public Integer getId() {
         return id;
@@ -45,13 +44,13 @@ public class Tienda {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
+//    public String getDescripcion() {
+//        return descripcion;
+//    }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+//    public void setDescripcion(String descripcion) {
+//        this.descripcion = descripcion;
+//    }
 
     public int getTelefono() {
         return telefono;

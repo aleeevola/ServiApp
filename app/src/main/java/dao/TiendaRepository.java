@@ -71,8 +71,8 @@ public class TiendaRepository {
         llamada.enqueue(new Callback<Tienda>() {
             @Override
             public void onResponse(Call<Tienda> call, Response<Tienda> response) {
-                Log.d("APP_2","Despues que ejecuta"+ response.isSuccessful());
-                Log.d("APP_2","COdigo"+ response.code());
+                Log.d("SERVIAPP","Despues que ejecuta"+ response.isSuccessful());
+                Log.d("SERVIAPP","Codigo"+ response.code());
 
                 if(response.isSuccessful()){
                     Log.d("APP_2","EJECUTO");
@@ -182,8 +182,7 @@ public class TiendaRepository {
 
 
 
-    private Tienda tienda = new Tienda();
-    public Tienda buscarTienda(final String nombre, final Handler h){
+    public void buscarTienda(final String nombre, final Handler h){
         Log.d("TiendaRepository", "ENTRO EN BUSCAR TIENDA");
         Call<List<Tienda>> llamada = this.tiendaRest.buscarTienda(nombre);
         llamada.enqueue(new Callback<List<Tienda>>() {
@@ -213,7 +212,6 @@ public class TiendaRepository {
             }
 
         });
-    return tienda;
     }
 
 
