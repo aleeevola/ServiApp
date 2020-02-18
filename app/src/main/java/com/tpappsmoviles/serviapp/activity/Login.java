@@ -105,7 +105,7 @@ public class Login extends AppCompatActivity {
 
         private void existeTienda(String nombre){
             Log.d("EXISTE TIENDA","usuario: " + nombre);
-            Tienda tienda = TiendaRepository.getInstance().buscarTienda(nombre,miHandler);
+            TiendaRepository.getInstance().buscarTienda(nombre,miHandler);
         }
 
     private void noExisteTienda(final String nombre){
