@@ -153,8 +153,8 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         //String horario = tienda.getHorarioDeAtencion();
         if(tienda.getHorarioDeAtencion()!=null){
             String horario = tienda.getHorarioDeAtencion();
-            horaInicio.setText(horario.substring(0,4));
-            horaFin.setText(horario.substring(8,12));
+            horaInicio.setText(horario.substring(0,5));
+            horaFin.setText(horario.substring(8,13));
         }
 
         //poner que muestre el rubro que ya habia seleccionado
@@ -166,12 +166,17 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     }
 
     public void saveParametros(){
+        Log.d("SERVIAPP SAVE PARAMETROS", "ENtro");
         tienda.setNombre(nombre.getText().toString());
         tienda.setRubro((Rubro) rubro.getSelectedItem());
         tienda.setTelefono(Integer.parseInt(telefono.getText().toString()));
         tienda.setHorarioDeAtencion(horaInicio.getText().toString()+" a "+horaFin.getText().toString());
         tienda.setDireccion(direccion.getText().toString());
+        try{
         tienda.setImagen(imagenBitmap);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
         tienda.setServicios(listaServicios);
 
         TiendaRepository.getInstance().actualizarTienda(tienda, miHandler);
