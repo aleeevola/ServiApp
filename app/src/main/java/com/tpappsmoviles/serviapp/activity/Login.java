@@ -25,7 +25,8 @@ import domain.Tienda;
 
 
 public class Login extends AppCompatActivity {
-    //Boolean existeTienda = false;
+        Boolean existeTienda = false;
+        String usuario;
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -38,16 +39,21 @@ public class Login extends AppCompatActivity {
             final Switch esTienda = findViewById(R.id.switchTienda);
             final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
-            Boolean existeTienda = false;
+            usuario = usuarioEditText.getText().toString();
+
 
             loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String usuario = usuarioEditText.getText().toString();
+                    usuario = usuarioEditText.getText().toString();
                     if(!usuario.isEmpty()) {
                         loadingProgressBar.setVisibility(View.VISIBLE);
                         if (esTienda.isChecked()) {
-                            iniciarSesionTienda(usuario, contraseñaEditText.getText().toString());
+                            try {
+                                iniciarSesionTienda(usuario, contraseñaEditText.getText().toString());
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             Intent i1 = new Intent(v.getContext(), MainActivity.class);
                             i1.putExtra("usuario", usuario);
@@ -61,14 +67,14 @@ public class Login extends AppCompatActivity {
         }
 
 
-        private void iniciarSesionTienda(final String usuario, String contraseña){
+        private void iniciarSesionTienda(final String usuario, String contraseña) throws InterruptedException {
             System.out.println("System out print antes de llamar a buscarTienda ");
 
-            Boolean existeTienda = TiendaRepository.getInstance().existeTienda(usuario);
 
+            TiendaRepository.getInstance().existeTienda(usuario, miHandler);
             System.out.println("System out print tienda");
 
-            if(!existeTienda){
+        /*    if(!TiendaRepository.getInstance().existeTienda(usuario, miHandler)){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("Tienda inexistente. ¿Desea registrar la tienda "+ usuario + "?")
                         .setTitle("Registrar tienda")
@@ -95,21 +101,45 @@ public class Login extends AppCompatActivity {
             }
             else{
                 System.out.println("System out print en ELSE ");
-                Tienda tienda = TiendaRepository.getInstance().buscarTienda(usuario,miHandler);
+              //  Tienda tienda = TiendaRepository.getInstance().buscarTienda(usuario,miHandler);
 
             }
-
+*/
         }
 
-        private Boolean existeTienda(Tienda t){
-            if(null == t){
-                System.out.println("EXISTE TIENDA RETORNA FALSO");
-                return false;
-            }else{
-                System.out.println("EXISTE TIENDA RETORNA TRUE");
-                return true;
-            }
+        private void existeTienda(String nombre){
+            Log.d("EXISTE TIENDA","usuario: " + nombre);
+            Tienda tienda = TiendaRepository.getInstance().buscarTienda(nombre,miHandler);
         }
+
+    private void noExisteTienda(final String nombre){
+        Log.d("NO EXISTE TIENDA","usuario: " + nombre);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Tienda inexistente. ¿Desea registrar la tienda "+ nombre + "?")
+                .setTitle("Registrar tienda")
+                .setPositiveButton("Registrar",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dlgInt, int i) {
+                                Tienda tienda = new Tienda();
+                                tienda.setNombre(nombre);
+                                showToast("Tienda " + nombre + " creada.");
+                                TiendaRepository.getInstance().crearTienda(tienda, miHandler);
+                            }
+                        })
+                .setNegativeButton("Cancelar",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dlgInt, int i) {
+                                Toast.makeText(Login.this,
+                                        "Registro cancelado",Toast.LENGTH_LONG)
+                                        .show();
+                            }
+                        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
 
         public void showToast(String txtToast){
@@ -133,10 +163,15 @@ public class Login extends AppCompatActivity {
                     i.putExtra("ID_TIENDA", m.arg2);
                     startActivity(i);
                     break;
+                case TiendaRepository._EXISTE_TIENDA:
+                    existeTienda(usuario);
+                    break;
+                case TiendaRepository._NOEXISTE_TIENDA:
+                    noExisteTienda(usuario);
+                    break;
                 default:
                     Log.d("DEFAULT BUSCRTIENDA", "handler");
 
-                    //existeTienda=false;
             }
         }
     };

@@ -34,6 +34,11 @@
       "nombre": "Tienda1",
       "telefono": 0,
       "id": 7
+    },
+    {
+      "nombre": "Tienda2222",
+      "telefono": 0,
+      "id": 8
     }
   ]
 }

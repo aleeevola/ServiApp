@@ -131,16 +131,19 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         Integer idTienda = extras.getInt("ID_TIENDA");
         Log.d("Id recuperado en EditarPerfil", idTienda.toString());
-        tienda = TiendaRepository.getInstance().buscarTienda(idTienda,miHandler);
-            setParametros();
+        //tienda =
+                TiendaRepository.getInstance().buscarTienda(idTienda,miHandler);
+        Log.d("AFUERA EDITAR TIENDA","Nombre tienda: ");
+           // setParametros();
 
     }
 
     public void setParametros(){
-//        nombre.setText(tienda.getNombre());
- /*       telefono.setText(String.valueOf(tienda.getTelefono()));
-        direccion.setText(tienda.getDireccion());
-        imagen.setImageBitmap(tienda.getImagen());
+        nombre.setText(tienda.getNombre());
+        Log.d("SET PARAMETROS","Nombre tienda: "+tienda.getNombre());
+//        telefono.setText(String.valueOf(tienda.getTelefono()));
+//        direccion.setText(tienda.getDireccion());
+/*        imagen.setImageBitmap(tienda.getImagen());
 */
         //poner que muestre el rubro que ya habia seleccionado
         //este falta tmb
@@ -268,7 +271,9 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         public void handleMessage(Message m){
             switch (m.arg1){
                 case TiendaRepository._CONSULTA_TIENDA:
-
+                    Log.d("HANDLER CONSULTA TIENDA","Nombre tienda: "+tienda.getNombre());
+                    tienda = TiendaRepository.getInstance().getListaTiendas().get(0);
+                    setParametros();
                     break;
                 default:
                     break;
