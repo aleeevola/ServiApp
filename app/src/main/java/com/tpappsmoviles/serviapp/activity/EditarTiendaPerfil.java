@@ -57,6 +57,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     private Tienda tienda= new Tienda();
     private EditText nombre;
     private Spinner rubro;
+    private ArrayAdapter<Rubro> adapterRubro;
     private EditText telefono;
     private EditText horaInicio;
     private EditText horaFin;
@@ -119,7 +120,9 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         });
 
         rubro = (Spinner) findViewById(R.id.ep_rubro);
-        rubro.setAdapter(new ArrayAdapter<Rubro>(this, android.R.layout.simple_spinner_item, Rubro.values()));
+        adapterRubro = new ArrayAdapter<Rubro>(this, android.R.layout.simple_spinner_item, Rubro.values());
+        //rubro.setAdapter(new ArrayAdapter<Rubro>(this, android.R.layout.simple_spinner_item, Rubro.values()));
+        rubro.setAdapter(adapterRubro);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.ep_CardServicios);
         mRecyclerView.setHasFixedSize(true);
@@ -138,14 +141,19 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     public void setParametros(){
         nombre.setText(tienda.getNombre());
         telefono.setText(String.valueOf(tienda.getTelefono()));
-//        direccion.setText(tienda.getDireccion());
-/*        imagen.setImageBitmap(tienda.getImagen());
-*/
+        direccion.setText(tienda.getDireccion());
+        imagen.setImageBitmap(tienda.getImagen());
+        rubro.setSelection(adapterRubro.getPosition(tienda.getRubro()));
+        String horario = tienda.getHorarioDeAtencion();
+        if(!horario.isEmpty()){
+            horaInicio.setText(horario.substring(0,4));
+            horaFin.setText(horario.substring(8,12));
+        }
+
         //poner que muestre el rubro que ya habia seleccionado
         //este falta tmb
         //horario.setText(tienda.getHorarioDeAtencion());
-
-      //  listaServicios=tienda.getServicios();
+        listaServicios=tienda.getServicios();
 
 
     }
@@ -159,10 +167,10 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         tienda.setImagen(imagenBitmap);
         tienda.setServicios(listaServicios);
 
+        TiendaRepository.getInstance().actualizarTienda(tienda, miHandler);
         //guardar los cambios en tienda y despues actalizarlo en el servidor
+        // A que te referis con guardar lo cambios en tienda? Todos esos set ya los guardarian, no? La funcion de la linea de arriba (actualizarTienda) la guarda en el servidor
 
-
-        showToast("Datos guardados");
     }
 
     public void selectImagen(){
@@ -270,7 +278,14 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                     tienda = TiendaRepository.getInstance().getListaTiendas().get(0);
                     setParametros();
                     break;
+                case TiendaRepository._UPDATE_TIENDA:
+                    showToast("Datos guardados");
+                    break;
+                case TiendaRepository._ERROR_TIENDA:
+                    showToast("Se produjo en error");
+                    break;
                 default:
+                    Log.d("SERVIAPP", "Default handler EditarPerfilTienda");
                     break;
             }
         }

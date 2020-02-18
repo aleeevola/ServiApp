@@ -23,6 +23,8 @@
     <string name="rubro">Rubro: </string>
     <string name="calificacion">Calificación: </string>
     <string name="telefono">Teléfono: </string>
+    <string name="hora_inicio"> 08:30 </string>
+    <string name="hora_fin"> 17:30 </string>
 
 
 
