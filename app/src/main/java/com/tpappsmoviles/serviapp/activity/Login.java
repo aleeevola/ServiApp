@@ -25,7 +25,7 @@ import domain.Tienda;
 
 
 public class Login extends AppCompatActivity {
-    Boolean existeTienda = false;
+    //Boolean existeTienda = false;
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -63,11 +63,12 @@ public class Login extends AppCompatActivity {
 
         private void iniciarSesionTienda(final String usuario, String contraseña){
             System.out.println("System out print antes de llamar a buscarTienda ");
-            Tienda tienda = null;
-            tienda = TiendaRepository.getInstance().buscarTienda(usuario,miHandler);
+
+            Boolean existeTienda = TiendaRepository.getInstance().existeTienda(usuario);
+
             System.out.println("System out print tienda");
 
-            if(tienda == null){
+            if(!existeTienda){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("Tienda inexistente. ¿Desea registrar la tienda "+ usuario + "?")
                         .setTitle("Registrar tienda")
@@ -94,10 +95,8 @@ public class Login extends AppCompatActivity {
             }
             else{
                 System.out.println("System out print en ELSE ");
-                //PASAR TIENDA CON PUTEXTRA
-                Intent i1 = new Intent(this, EditarTiendaPerfil.class);
-                i1.putExtra("ID_TIENDA", tienda.getId());
-                startActivity(i1);
+                Tienda tienda = TiendaRepository.getInstance().buscarTienda(usuario,miHandler);
+
             }
 
         }
@@ -125,7 +124,9 @@ public class Login extends AppCompatActivity {
             switch (m.arg1){
                 case TiendaRepository._CONSULTA_TIENDA:
                     Log.d("APP Serviapp","consulta "+m.arg1);
-
+                    Intent i1 = new Intent(Login.this, EditarTiendaPerfil.class);
+                    i1.putExtra("ID_TIENDA", m.arg2);
+                    startActivity(i1);
                     break;
                 case TiendaRepository._ALTA_TIENDA:
                     Intent i = new Intent(Login.this,EditarTiendaPerfil.class);
@@ -134,7 +135,8 @@ public class Login extends AppCompatActivity {
                     break;
                 default:
                     Log.d("DEFAULT BUSCRTIENDA", "handler");
-                    existeTienda=false;
+
+                    //existeTienda=false;
             }
         }
     };

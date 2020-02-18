@@ -134,7 +134,7 @@ public class TiendaRepository {
         });
     }
 
-    public void borrarObra(final Tienda tienda, final Handler h){
+    public void borrarTienda(final Tienda tienda, final Handler h){
         Call<Void> llamada = this.tiendaRest.borrar(tienda.getId());
         llamada.enqueue(new Callback<Void>() {
             @Override
@@ -182,14 +182,9 @@ public class TiendaRepository {
                     Log.d("TiendaRepository", "RESPUESTA SUCCESSFUL");
                     Message m = new Message();
                     m.arg1 = _CONSULTA_TIENDA;
+                    m.arg2 = response.body().get(0).getId();
                     h.sendMessage(m);
-                    if(response.body().isEmpty()){
-                        tienda = null;
-                        m.arg1 = _NOEXISTE_TIENDA;
-                    } else {
-                        tienda = response.body().get(0);
-                        Log.d("TiendaRepository", tienda.getNombre());
-                    }
+
                 }
             }
 
@@ -228,7 +223,40 @@ public class TiendaRepository {
         });
         return tienda;
     }
+    Boolean existe;
+    public Boolean existeTienda(final String nombre){
 
+        Log.d("TiendaRepository", "ENTRO EN BUSCAR TIENDA");
+        Call<List<Tienda>> llamada = this.tiendaRest.buscarTienda(nombre);
+        llamada.enqueue(new Callback<List<Tienda>>() {
+            @Override
+            public void onResponse(Call<List<Tienda>> call, Response<List<Tienda>> response) {
+                Log.d("TiendaRepository", "RESPUESTA ON RESPONSE - CODIGO: "+ response.code());
+                if(response.isSuccessful()){
+                    Log.d("TiendaRepository", "RESPUESTA SUCCESSFUL");
+                //    Message m = new Message();
+                //    m.arg1 = _CONSULTA_TIENDA;
+                //    h.sendMessage(m);
+                    if(response.body().isEmpty()){
+                        existe = false;
+                //        m.arg1 = _NOEXISTE_TIENDA;
+                    } else {
+                        existe = true;
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Tienda>> call, Throwable t) {
+                existe = false;
+               // Message m = new Message();
+               // m.arg1 = _ERROR_TIENDA;
+                Log.d("TiendaRepository", "FALLA" + t.getMessage());
+               // h.sendMessage(m);
+            }
+
+        });
+        return existe;
+    }
     public List<Tienda> getListaTiendas() {
         return listaTiendas;
     }
