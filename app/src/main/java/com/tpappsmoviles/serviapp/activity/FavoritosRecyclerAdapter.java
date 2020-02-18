@@ -2,6 +2,7 @@ package com.tpappsmoviles.serviapp.activity;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 
 import android.view.LayoutInflater;
@@ -17,13 +18,17 @@ import com.tpappsmoviles.serviapp.R;
 
 import java.util.List;
 
+import dao.room.FavoritosDao;
+import dao.room.FavoritosRepository;
+import domain.Favoritos;
 import domain.Tienda;
+import domain.TiendaFavorita;
 
 public class FavoritosRecyclerAdapter extends RecyclerView.Adapter<FavoritosRecyclerAdapter.TiendaViewHolder> {
 
-    public List<Tienda> mDataSet;
+    public List<TiendaFavorita> mDataSet;
 
-    public FavoritosRecyclerAdapter(List<Tienda> myDataSet){
+    public FavoritosRecyclerAdapter(List<TiendaFavorita> myDataSet){
         mDataSet = myDataSet;
     }
 
@@ -36,7 +41,7 @@ public class FavoritosRecyclerAdapter extends RecyclerView.Adapter<FavoritosRecy
 
     @Override
     public void onBindViewHolder(TiendaViewHolder holder, final int position) {
-        final Tienda tienda = mDataSet.get(position);
+        final TiendaFavorita tienda = mDataSet.get(position);
         holder.nombreTienda.setText(tienda.getNombre());
         holder.rubro.setText(tienda.getRubro().toString());
         holder.horario.setText(tienda.getHorarioDeAtencion());
@@ -44,7 +49,8 @@ public class FavoritosRecyclerAdapter extends RecyclerView.Adapter<FavoritosRecy
             holder.btnEliminar.setTag(position);
             holder.btnEliminar.setOnClickListener(new View.OnClickListener() {
                                                       @Override
-                                                      public void onClick(View view) {
+                                                      public void onClick(final View view) {
+                                                          final Context c = view.getContext();
                                                           final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                                                           builder.setMessage("¿Desea eliminar la tienda \" " + tienda.getNombre() + "\"?")
                                                                   .setTitle("Eliminar de favoritos")
@@ -52,8 +58,12 @@ public class FavoritosRecyclerAdapter extends RecyclerView.Adapter<FavoritosRecy
                                                                           new DialogInterface.OnClickListener() {
                                                                               @Override
                                                                               public void onClick(DialogInterface dlgInt, int i) {
+
                                                                                   mDataSet.remove(position);
-                                                                                  //PlatoRepository.getInstance().borrarPlato(plato, miHandler);
+
+                                                                                  FavoritosDao pdao= FavoritosRepository.getInstance(c).getFavoritosBD().favoritosDao();
+                                                                                 pdao.deleteTiendaFavoria(tienda);
+
                                                                                   notifyDataSetChanged();
                                                                                   Toast.makeText(builder.getContext(), "La tienda fue eliminada de favoritos", Toast.LENGTH_LONG).show();
 
@@ -98,20 +108,5 @@ public class FavoritosRecyclerAdapter extends RecyclerView.Adapter<FavoritosRecy
 
     }
 
-/*
-    Handler miHandler = new Handler(Looper.myLooper()){
-        @Override
-        public void handleMessage(Message m){
-            mDataSet = PlatoRepository.getInstance().getListaPlatos();
-            switch (m.arg1){
-                case PlatoRepository._CONSULTA_PLATO:
-                    break;
-                case PlatoRepository._BORRADO_PLATO:
-
-                    break;
-            }
-        }
-    };
-    */
 
 }
