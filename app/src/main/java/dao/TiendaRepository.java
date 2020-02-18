@@ -22,8 +22,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.Retrofit;
 
 public class TiendaRepository {
-
+    //Jo S2
     public static String _SERVER = "http://10.0.2.2:5000/";
+
+    //ale
+    //json-server --watch tiendas.json --port 5000 --host 192.168.0.3
+    //public static String _SERVER = "http://192.168.0.3:5000";
+
     private List<Tienda> listaTiendas;
 
     public static final int _ALTA_TIENDA =1;
@@ -53,7 +58,7 @@ public class TiendaRepository {
 
     private void configurarRetrofit(){
         this.rf = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:5000/")
+                .baseUrl(_SERVER)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         Log.d("APP_2","INSTANCIA CREADA");
