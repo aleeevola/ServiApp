@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ServiApp</string>
     <!-- Strings related to login -->
-    <string name="email">Email</string>
+    <string name="usuario">Usuario</string>
     <string name="password">Contraseña</string>
     <string name="switchTienda">Perfil Tienda</string>
     <string name="inicio_sesion">Iniciar sesión o registrarse</string>

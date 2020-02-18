@@ -68,11 +68,7 @@ public class Login extends AppCompatActivity {
 
 
         private void iniciarSesionTienda(final String usuario, String contraseña) throws InterruptedException {
-            System.out.println("System out print antes de llamar a buscarTienda ");
-
-
             TiendaRepository.getInstance().existeTienda(usuario, miHandler);
-            System.out.println("System out print tienda");
 
         /*    if(!TiendaRepository.getInstance().existeTienda(usuario, miHandler)){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);

@@ -2,9 +2,12 @@
 <resources>
     <color name="colorPrimary">#000000</color>
 
-    <color name="colorPrimaryDark">#919191</color>
+   <!-- <color name="colorPrimaryDark">#919191</color> -->
     <color name="colorAccent">#D81B60</color>
     <color name="colorRed">#FF0000</color>
+
+    <color name="colorPrimaryDark">#72c4c1</color>
+
 
     <color name="colorTienda">#333333</color>
     <color name="colorTextoInfoTienda">#FFFFFF</color>

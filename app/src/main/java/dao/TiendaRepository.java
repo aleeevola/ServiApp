@@ -212,129 +212,8 @@ public class TiendaRepository {
     }
 
 
-    public Tienda buscarTienda(final Integer id, final Handler h){
-        final List<Tienda> resultado = new ArrayList<Tienda>() {
-            @Override
-            public int size() {
-                return 0;
-            }
+    public void buscarTienda(final Integer id, final Handler h){
 
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public boolean contains(@Nullable Object o) {
-                return false;
-            }
-
-            @NonNull
-            @Override
-            public Iterator<Tienda> iterator() {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Object[] toArray() {
-                return new Object[0];
-            }
-
-            @NonNull
-            @Override
-            public <T> T[] toArray(@NonNull T[] ts) {
-                return null;
-            }
-
-            @Override
-            public boolean add(Tienda tienda) {
-                return false;
-            }
-
-            @Override
-            public boolean remove(@Nullable Object o) {
-                return false;
-            }
-
-            @Override
-            public boolean containsAll(@NonNull Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(@NonNull Collection<? extends Tienda> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean addAll(int i, @NonNull Collection<? extends Tienda> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean removeAll(@NonNull Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public boolean retainAll(@NonNull Collection<?> collection) {
-                return false;
-            }
-
-            @Override
-            public void clear() {
-
-            }
-
-            @Override
-            public Tienda get(int i) {
-                return null;
-            }
-
-            @Override
-            public Tienda set(int i, Tienda tienda) {
-                return null;
-            }
-
-            @Override
-            public void add(int i, Tienda tienda) {
-
-            }
-
-            @Override
-            public Tienda remove(int i) {
-                return null;
-            }
-
-            @Override
-            public int indexOf(@Nullable Object o) {
-                return 0;
-            }
-
-            @Override
-            public int lastIndexOf(@Nullable Object o) {
-                return 0;
-            }
-
-            @NonNull
-            @Override
-            public ListIterator<Tienda> listIterator() {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public ListIterator<Tienda> listIterator(int i) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public List<Tienda> subList(int i, int i1) {
-                return null;
-            }
-        };
         Call<Tienda> llamada = this.tiendaRest.buscarTienda(id);
         llamada.enqueue(new Callback<Tienda>() {
             @Override
@@ -343,16 +222,9 @@ public class TiendaRepository {
                     Message m = new Message();
                     listaTiendas.clear();
                     listaTiendas.add(response.body());
-                    tienda = response.body();
-                    Log.d("BUSCAR TIENDA","Nombre tienda: "+response.body().getNombre());
-                    Log.d("BUSCAR TIENDA","Size resultado: " + listaTiendas.size());
-                    Log.d("BUSCAR TIENDA","Nombre tienda: "+listaTiendas.get(0).getNombre());
-                    //listaTiendas.notify();
                     m.arg1 = _CONSULTA_TIENDA;
                     h.sendMessage(m);
                 }
-                Log.d("BUSCAR TIENDA2","Size resultado: " + listaTiendas.size());
-                resultado.add(listaTiendas.get(0));
             }
 
             @Override
@@ -363,9 +235,7 @@ public class TiendaRepository {
             }
 
         });
-        Log.d("BUSCAR TIENDA ABAJO","resultado size: "+resultado.size());
-//        return listaTiendas.get(0);
-    return tienda;
+
     }
     Boolean existe;
     public Boolean existeTienda(final String nombre, final Handler h){
