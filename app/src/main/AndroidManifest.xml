@@ -3,6 +3,8 @@
     package="com.tpappsmoviles.serviapp">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,6 +26,9 @@
         <activity android:name=".activity.ListaFavorios"  android:parentActivityName=".activity.MainActivity"/>
         <activity android:name=".activity.TiendaPerfil"  android:parentActivityName=".activity.MainActivity"/>
         <activity android:name=".activity.EditarTiendaPerfil"  android:parentActivityName=".activity.MainActivity"/>
-    </application>
+        <activity android:name=".activity.MapaTiendas"  android:parentActivityName=".activity.MainActivity"/>
 
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCuYHwH_F4qzlVLJYDJWIR5FZWS_eN5loA"/>
+    </application>
 </manifest>

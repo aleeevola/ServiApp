@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -25,19 +27,17 @@ import com.tpappsmoviles.serviapp.R;
 import java.util.ArrayList;
 
 import dao.TiendaRepository;
+import domain.Rubro;
 import domain.Tienda;
 
-public class MapaTiendas extends FragmentActivity implements OnMapReadyCallback {
+public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
-    private PolylineOptions lineaOpciones= new PolylineOptions();
-    private Polyline linea;
 
     private ArrayList<Tienda> tiendas=new ArrayList<>();
 
     private Spinner spinner;
-    private ArrayAdapter<CharSequence> adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +46,12 @@ public class MapaTiendas extends FragmentActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapTiendas);
         mapFragment.getMapAsync(this);
 
-
         spinner = (Spinner) findViewById(R.id.spinnerRubros);
+        spinner.setAdapter(new ArrayAdapter<Rubro>(this, android.R.layout.simple_spinner_item, Rubro.values()));
 
-        //adapter = ArrayAdapter.createFromResource(this, R.array.estados_array, android.R.layout.simple_spinner_item);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle("Mapa de tiendas");
     }
 
 
@@ -63,7 +60,7 @@ public class MapaTiendas extends FragmentActivity implements OnMapReadyCallback 
         mMap = googleMap;
         actualizarMapa();
 
-        listarPedidos();
+        listarTiendas();
         cargarMarcadores("TODOS");
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -72,7 +69,7 @@ public class MapaTiendas extends FragmentActivity implements OnMapReadyCallback 
                                                   mMap.clear();
 
                                                   cargarMarcadores(adapterView.getItemAtPosition(i).toString());
-                                                  linea = mMap.addPolyline(lineaOpciones);
+
                                               }
 
                                               @Override
@@ -120,7 +117,6 @@ public class MapaTiendas extends FragmentActivity implements OnMapReadyCallback 
         String informacion;
         Boolean todos=false;
 
-        lineaOpciones=new PolylineOptions();
         if(rubro.equals("TODOS")) todos=true;
 
 
@@ -162,82 +158,32 @@ public class MapaTiendas extends FragmentActivity implements OnMapReadyCallback 
                 }
 
                 titulo=tiendas.get(i).getNombre();
-                informacion="Tienda:"+titulo + " Rubro: "+tiendas.get(i).getRubro().toString() + "Teléfono: " + tiendas.get(i).getTelefono();
-             /*   LatLng coordenadas= new LatLng(tiendas.get(i).getLat(),tiendas.get(i).getLng());
+                informacion=" Rubro: "+tiendas.get(i).getRubro().toString() + " Teléfono: " + tiendas.get(i).getTelefono();
+             //   LatLng coordenadas= new LatLng(tiendas.get(i).getLat(),tiendas.get(i).getLng());
+                LatLng coordenadas= new LatLng(-31,-60);
                 mMap.addMarker(new MarkerOptions()
                         .position(coordenadas)
                         .title(titulo)
                         .snippet(informacion)
                         .icon(bitmapDescriptor));
-                if(tiendas.get(i).getRubro().toString().equals("En envio")){
-                    lineaOpciones.add(coordenadas);
-                }
 
-             */
             }
         }
 
     }
 
-    public void listarPedidos(){
+    public void listarTiendas(){
 
 
-        tiendas = (ArrayList) TiendaRepository.getInstance().getListaTiendas();
-        System.out.println(tiendas.toString());
-       /*
-        Pedido p1 =new Pedido();
-        p1.setEstado(1);
-        p1.setId(1);
-        p1.setLat(-31.620816);
-        p1.setLng(-60.747582);
-        pedidos.add(p1);
-        Pedido p2 =new Pedido();
-        p2.setEstado(2);
-        p2.setId(1);
-        p2.setLat(-31.00);
-        p2.setLng(-60.747582);
-        pedidos.add(p2);
-        Pedido p3 =new Pedido();
-        p3.setEstado(3);
-        p3.setId(1);
-        p3.setLat(-31.10);
-        p3.setLng(-60.66);
-        pedidos.add(p3);
-        Pedido p4 =new Pedido();
-        p4.setEstado(4);
-        p4.setId(4);
-        p4.setLat(-30.00);
-        p4.setLng(-61.747582);
-        pedidos.add(p4);
-        Pedido p5 =new Pedido();
-        p5.setEstado(5);
-        p5.setId(5);
-        p5.setLat(-29.00);
-        p5.setLng(-60.899);
-        pedidos.add(p5);
-        Pedido p6 =new Pedido();
-        p6.setEstado(6);
-        p6.setId(6);
-        p6.setLat(-31.3);
-        p6.setLng(-62.747582);
-        pedidos.add(p6);
-        Pedido p7 =new Pedido();
-        p7.setEstado(7);
-        p7.setId(7);
-        p7.setLat(-33.00);
-        p7.setLng(-61.582);
-        pedidos.add(p7);
-        Pedido p8 =new Pedido();
-        p8.setEstado(8);
-        p8.setId(8);
-        p8.setLat(-32.11);
-        p8.setLng(-60.74782);
-        pedidos.add(p8);
-        Pedido p9 =new Pedido();
-        p9.setEstado(6);
-        p9.setId(9);
-        p9.setLat(-30.1);
-        p9.setLng(-62.582);
-        pedidos.add(p9);*/
+       // tiendas = (ArrayList) TiendaRepository.getInstance().getListaTiendas();
+        //System.out.println(tiendas.toString());
+
+        Tienda t1= new Tienda();
+        t1.setNombre("Hola");
+        t1.setRubro(Rubro.Mascotas);
+        t1.setTelefono(123456789);
+        t1.setDireccion("hernan cataneo");
+        t1.setHorarioDeAtencion("8:00 a 12:00");
+        tiendas.add(t1);
     }
 }

@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         btnVerMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //  Intent intentMapa = new Intent(this ,MainActivity.class);
-               // startActivity(intentMapa);
+                  Intent intentMapa = new Intent(view.getContext() ,MapaTiendas.class);
+                startActivity(intentMapa);
             }
         });
 
