@@ -39,7 +39,10 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$rf_version"
     implementation "com.squareup.retrofit2:converter-gson:$rf_version"
 
-
+    //Dependencias ROOM
+    def room_version = "2.2.0-beta01"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 
 
 }
