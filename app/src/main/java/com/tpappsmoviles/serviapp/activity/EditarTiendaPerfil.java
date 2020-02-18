@@ -142,10 +142,17 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         nombre.setText(tienda.getNombre());
         telefono.setText(String.valueOf(tienda.getTelefono()));
         direccion.setText(tienda.getDireccion());
-        imagen.setImageBitmap(tienda.getImagen());
+        try{
+            imagen.setImageBitmap(tienda.getImagen());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //imagen.setImageBitmap(tienda.getImagen());
+
         rubro.setSelection(adapterRubro.getPosition(tienda.getRubro()));
-        String horario = tienda.getHorarioDeAtencion();
-        if(!horario.isEmpty()){
+        //String horario = tienda.getHorarioDeAtencion();
+        if(tienda.getHorarioDeAtencion()!=null){
+            String horario = tienda.getHorarioDeAtencion();
             horaInicio.setText(horario.substring(0,4));
             horaFin.setText(horario.substring(8,12));
         }
