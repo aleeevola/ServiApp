@@ -52,7 +52,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     private ServiciosRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public static ArrayList<Servicio> listaServicios =new ArrayList<>();
+    public static List<Servicio> listaServicios =new ArrayList<>();
 
     private Tienda tienda= new Tienda();
     private EditText nombre;
@@ -124,18 +124,13 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         //rubro.setAdapter(new ArrayAdapter<Rubro>(this, android.R.layout.simple_spinner_item, Rubro.values()));
         rubro.setAdapter(adapterRubro);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.ep_CardServicios);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new ServiciosRecyclerAdapter(listaServicios);
-        mRecyclerView.setAdapter(mAdapter);
-
         Bundle extras = getIntent().getExtras();
         Integer idTienda = extras.getInt("ID_TIENDA");
         Log.d("Id recuperado en EditarPerfil", idTienda.toString());
         TiendaRepository.getInstance().buscarTienda(idTienda,miHandler);
      //   setParametros();  LOS SETEA EN EL HANDLER
+
+
     }
 
     public void setParametros(){
@@ -161,8 +156,15 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         //este falta tmb
         //horario.setText(tienda.getHorarioDeAtencion());
         listaServicios=tienda.getServicios();
+        System.out.println("gola"+listaServicios.toString());
 
-
+        mRecyclerView = (RecyclerView) findViewById(R.id.ep_CardServicios);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new ServiciosRecyclerAdapter(listaServicios);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 
     public void saveParametros(){
@@ -177,7 +179,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     } catch (Exception e) {
         e.printStackTrace();
     }
-        tienda.setServicios(listaServicios);
+        tienda.setServicios((ArrayList<Servicio>) listaServicios);
 
         TiendaRepository.getInstance().actualizarTienda(tienda, miHandler);
         //guardar los cambios en tienda y despues actalizarlo en el servidor
@@ -236,8 +238,12 @@ public class EditarTiendaPerfil extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            imagenBitmap=BitmapFactory.decodeFile(picturePath);
-            imagen.setImageBitmap(imagenBitmap);
+            //imagenBitmap=BitmapFactory.decodeFile(picturePath);
+
+            Bitmap resized = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(picturePath), 800, 600, true);
+
+            imagenBitmap=resized;
+            imagen.setImageBitmap(resized);
 
         }
 

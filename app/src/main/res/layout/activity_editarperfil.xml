@@ -125,17 +125,23 @@
 
     </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ep_CardServicios"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
-    <ImageView
-        android:id="@+id/ep_imagen"
-        android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:scaleType="centerCrop"
-        tools:srcCompat="@tools:sample/avatars[2]" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ep_CardServicios"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+        <ImageView
+            android:id="@+id/ep_imagen"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/defaultperfil"
+             />
 
     <Button
         android:id="@+id/ep_btn_cargarfoto"

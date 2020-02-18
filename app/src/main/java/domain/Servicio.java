@@ -38,4 +38,14 @@ public class Servicio {
   public void setPrecio(Float precio) {
     this.precio = precio;
   }
+
+  @Override
+  public String toString() {
+    return "Servicio{" +
+            "id=" + id +
+            ", nombre='" + nombre + '\'' +
+            ", descripcion='" + descripcion + '\'' +
+            ", precio=" + precio +
+            '}';
+  }
 }

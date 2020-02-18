@@ -40,7 +40,7 @@ public class ListaFavorios extends AppCompatActivity {
 
         recuperarFavoritos(1);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.CardRecycler);
+        mRecyclerView = (RecyclerView) findViewById(R.id.ep_CardServicios);
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(this);
