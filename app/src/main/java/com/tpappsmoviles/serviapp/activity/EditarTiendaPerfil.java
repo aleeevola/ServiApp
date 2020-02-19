@@ -1,6 +1,7 @@
 package com.tpappsmoviles.serviapp.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -70,20 +71,22 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     private Button btn_guardar;
     private Button btn_agregarServicio;
 
+    private float zonaTrabajo;
+    private Double lat;
+    private Double lng;
+
     private static int RESULT_LOAD_IMAGE = 1;
+    private static int RESULT_ZONA_TRABAJO = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editarperfil);
 
-        //setSupportActionBar((Toolbar) findViewById(R.id.toolbarListFavoritos));
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Editar Perfil");
 
-        //listaP = PlatoRepository.getInstance().getListaPlatos();
-        //PlatoRepository.getInstance().listarPlatos(miHandler);
 
         nombre =(EditText) findViewById(R.id.ep_nombreTienda);
         rubro =(Spinner) findViewById(R.id.ep_rubro);
@@ -116,6 +119,14 @@ public class EditarTiendaPerfil extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 agregarServicio();
+            }
+        });
+
+        btn_mapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), MapaZonaTrabajo.class);
+                ((Activity) view.getContext()).startActivityForResult(i, RESULT_ZONA_TRABAJO);
             }
         });
 
@@ -152,6 +163,10 @@ public class EditarTiendaPerfil extends AppCompatActivity {
             horaFin.setText(horario.substring(8,13));
         }
 
+        zonaTrabajo=tienda.getZonaTrabajo();
+        lat=tienda.getLat();
+        lng=tienda.getLng();
+
         //poner que muestre el rubro que ya habia seleccionado
         //este falta tmb
         //horario.setText(tienda.getHorarioDeAtencion());
@@ -180,6 +195,10 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         e.printStackTrace();
     }
         tienda.setServicios((ArrayList<Servicio>) listaServicios);
+
+        tienda.setZonaTrabajo(zonaTrabajo);
+        tienda.setLat(lat);
+        tienda.setLng(lng);
 
         TiendaRepository.getInstance().actualizarTienda(tienda, miHandler);
         //guardar los cambios en tienda y despues actalizarlo en el servidor
@@ -247,6 +266,13 @@ public class EditarTiendaPerfil extends AppCompatActivity {
 
         }
 
+        if (requestCode == RESULT_ZONA_TRABAJO && resultCode == RESULT_OK && null != data) {
+            Bundle extras = data.getExtras();
+            lat= extras.getDouble("LATITUD");
+            lng= extras.getDouble("LONGITUD");
+            zonaTrabajo = extras.getFloat("ZONATRABAJO");
+            System.out.println("ZONA--> "+lat+" "+lng+" "+zonaTrabajo);
+        }
 
     }
 

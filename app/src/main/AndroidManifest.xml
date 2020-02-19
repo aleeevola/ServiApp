@@ -27,6 +27,7 @@
         <activity android:name=".activity.TiendaPerfil"  android:parentActivityName=".activity.MainActivity"/>
         <activity android:name=".activity.EditarTiendaPerfil"  android:parentActivityName=".activity.MainActivity"/>
         <activity android:name=".activity.MapaTiendas"  android:parentActivityName=".activity.MainActivity"/>
+        <activity android:name=".activity.MapaZonaTrabajo"  android:parentActivityName=".activity.EditarTiendaPerfil"/>
 
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCuYHwH_F4qzlVLJYDJWIR5FZWS_eN5loA"/>
