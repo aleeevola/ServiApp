@@ -330,15 +330,14 @@ public class EditarTiendaPerfil extends AppCompatActivity {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             // Get the layout inflater
-            LayoutInflater inflater = this.getLayoutInflater();
+            //LayoutInflater inflater = this.getLayoutInflater();
+            final View customLayout = getLayoutInflater().inflate(R.layout.dialog_notificacion, null);
 
-        final String tipoNotificacion = ((Spinner) findViewById(R.id.dn_tipoNotificacion)).getSelectedItem().toString();
-        final String textoNotificacion = ((EditText) findViewById(R.id.dn_textoNotificacion)).getText().toString();
             // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout
-            builder.setView(inflater.inflate(R.layout.dialog_notificacion, null))
+            builder.setView(customLayout)
                     // Add action buttons
-                    .setPositiveButton(R.string.enviar, new DialogInterface.OnClickListener() {
+                    .setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             // enviar notificacion broadcast
@@ -351,6 +350,8 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
+                                    final String tipoNotificacion = ((Spinner) customLayout.findViewById(R.id.dn_tipoNotificacion)).getSelectedItem().toString();
+                                    final String textoNotificacion = ((EditText) customLayout.findViewById(R.id.dn_textoNotificacion)).getText().toString();
                                     Intent i = new Intent();
                                     i.putExtra("tipoNotificacion",tipoNotificacion);
                                     i.putExtra("textoNotificacion",textoNotificacion);
@@ -370,7 +371,8 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                 }
                     });
 
-
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
     }
 

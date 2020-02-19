@@ -4,15 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(primaryKeys = {"idtienda","idUsuarioFavorito"})
 public class TiendaFavorita {
-    @PrimaryKey
-    @NonNull
+
     private int idtienda;
     private String nombre;
     private String horarioDeAtencion;
     private Rubro rubro;
-
     private int idUsuarioFavorito;
 
     public int getIdtienda() {

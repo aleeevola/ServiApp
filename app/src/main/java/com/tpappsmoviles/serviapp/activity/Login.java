@@ -21,6 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.tpappsmoviles.serviapp.R;
 
 import dao.TiendaRepository;
+import dao.room.FavoritosDao;
+import dao.room.FavoritosRepository;
+import domain.Favoritos;
 import domain.Tienda;
 
 
@@ -44,7 +47,7 @@ public class Login extends AppCompatActivity {
 
             loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(final View v) {
                     usuario = usuarioEditText.getText().toString();
                     if(!usuario.isEmpty()) {
                         loadingProgressBar.setVisibility(View.VISIBLE);
@@ -55,9 +58,47 @@ public class Login extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         } else {
-                            Intent i1 = new Intent(v.getContext(), MainActivity.class);
-                            i1.putExtra("usuario", usuario);
-                            startActivity(i1);
+
+                            final FavoritosDao pdao= FavoritosRepository.getInstance(Login.this).getFavoritosBD().favoritosDao();
+                            Favoritos fv=pdao.selectFavoritosByNombreUsuario(usuario);
+                            if(fv==null){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                                builder.setMessage("Usuario inexistente. ¿Desea registrar el usuario "+ usuario + "?")
+                                        .setTitle("Registrar usuario")
+                                        .setPositiveButton("Registrar",
+                                                new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dlgInt, int i) {
+                                                        Favoritos favorito = new Favoritos();
+                                                        favorito.setNombre(usuario);
+                                                        showToast("Usuario " + usuario + " creado.");
+                                                        pdao.insertUserAndTiendas(favorito);
+                                                        Intent i1 = new Intent(v.getContext(), MainActivity.class);
+                                                        i1.putExtra("NOMBRE_USUARIO", usuario);
+                                                        startActivity(i1);
+                                                    }
+                                                })
+                                        .setNegativeButton("Cancelar",
+                                                new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dlgInt, int i) {
+                                                        Toast.makeText(Login.this,
+                                                                "Registro cancelado",Toast.LENGTH_LONG)
+                                                                .show();
+                                                    }
+                                                });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            } else {
+                                Intent i1 = new Intent(v.getContext(), MainActivity.class);
+                                i1.putExtra("NOMBRE_USUARIO", usuario);
+                                startActivity(i1);
+                            }
+
+
+                            Log.d("LOGIN ", "EJECUTO");
+
+
                         }
                     } else {
                         showToast("Ingrese un usuario");
@@ -69,38 +110,6 @@ public class Login extends AppCompatActivity {
 
         private void iniciarSesionTienda(final String usuario, String contraseña) throws InterruptedException {
             TiendaRepository.getInstance().existeTienda(usuario, miHandler);
-
-        /*    if(!TiendaRepository.getInstance().existeTienda(usuario, miHandler)){
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Tienda inexistente. ¿Desea registrar la tienda "+ usuario + "?")
-                        .setTitle("Registrar tienda")
-                        .setPositiveButton("Registrar",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dlgInt, int i) {
-                                        Tienda tienda = new Tienda();
-                                        tienda.setNombre(usuario);
-                                        TiendaRepository.getInstance().crearTienda(tienda, miHandler);
-                                    }
-                                })
-                        .setNegativeButton("Cancelar",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dlgInt, int i) {
-                                        Toast.makeText(Login.this,
-                                                "Registro cancelado",Toast.LENGTH_LONG)
-                                                .show();
-                                    }
-                                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-            else{
-                System.out.println("System out print en ELSE ");
-              //  Tienda tienda = TiendaRepository.getInstance().buscarTienda(usuario,miHandler);
-
-            }
-*/
         }
 
         private void existeTienda(String nombre){

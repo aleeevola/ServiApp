@@ -13,7 +13,7 @@ public class FavoritosRepository {
 
     private FavoritosRepository(Context ctx){
         favoritosBD = Room.databaseBuilder(ctx,
-                FavoritosBD.class, "favorito-db").allowMainThreadQueries().build();
+                FavoritosBD.class, "favorito3-db").allowMainThreadQueries().build();
 
         favoritosDao = favoritosBD.favoritosDao();
     }

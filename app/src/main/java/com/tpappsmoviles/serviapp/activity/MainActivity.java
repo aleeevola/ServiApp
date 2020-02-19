@@ -16,6 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.tpappsmoviles.serviapp.R;
 
+import dao.room.FavoritosDao;
+import dao.room.FavoritosRepository;
+import domain.Favoritos;
+
 public class MainActivity extends AppCompatActivity {
     private Button btnFavoritos;
     private Button btnBuscarServicios;
@@ -30,11 +34,18 @@ public class MainActivity extends AppCompatActivity {
         Button btnVerMapa = (Button) findViewById(R.id.btnVerMapa);
         Button btnPrueba = (Button) findViewById(R.id.btn_prueba);
 
+        Bundle extras = getIntent().getExtras();
+        String nombreUsuario = extras.getString("NOMBRE_USUARIO");
+        FavoritosDao pdao= FavoritosRepository.getInstance(MainActivity.this).getFavoritosBD().favoritosDao();
+        final Favoritos fv=pdao.loadUsuarioAndTiendasByNombre(nombreUsuario);
+
         btnFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //ACA HAY QUE BUSCAR EL USUARIO Y PASARLO PARA TENER LA LISTA DE FAVORITOS DE ESE USUARIO
+
                 Intent intentFavoritos = new Intent(view.getContext() , ListaFavorios.class);
+                intentFavoritos.putExtra("ID_USUARIO", fv.getIdUsuario());
                 startActivity(intentFavoritos);
                 }
         });
@@ -42,16 +53,18 @@ public class MainActivity extends AppCompatActivity {
         btnBuscarServicios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent intentServicios = new Intent(view.getContext() ,EditarTiendaPerfil.class);
-                startActivity(intentServicios);
+                // TODO: 19/2/2020 Lista de tiendas
+                // TODO: 19/2/2020 hacer reci
+                //Intent intentServicios = new Intent(view.getContext() ,EditarTiendaPerfil.class);
+                //startActivity(intentServicios);
             }
         });
 
         btnVerMapa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                  Intent intentMapa = new Intent(view.getContext() ,MapaTiendas.class);
+                Intent intentMapa = new Intent(view.getContext() ,MapaTiendas.class);
+                intentMapa.putExtra("ID_USUARIO", fv.getIdUsuario());
                 startActivity(intentMapa);
             }
         });
@@ -60,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i1 = new Intent(view.getContext(), TiendaPerfil.class);
+                i1.putExtra("ID_USUARIO", fv.getIdUsuario());
                 i1.putExtra("ID_TIENDA", 9);
                 startActivity(i1);
             }

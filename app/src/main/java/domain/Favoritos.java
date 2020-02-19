@@ -10,11 +10,22 @@ import java.util.List;
 
 @Entity
 public class Favoritos {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     private int idUsuario;
     @Ignore
-    private List<TiendaFavorita> tiendas;
+    private List<TiendaFavorita> tiendas = new ArrayList<>();
+    private String nombre;
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+
 
     public int getIdUsuario() {
         return idUsuario;

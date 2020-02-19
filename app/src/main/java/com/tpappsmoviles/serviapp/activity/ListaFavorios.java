@@ -38,9 +38,11 @@ public class ListaFavorios extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Tiendas favoritas");
 
-        recuperarFavoritos(1);
+        Bundle extras = getIntent().getExtras();
+        Integer idUsuario = extras.getInt("ID_USUARIO");
+        recuperarFavoritos(idUsuario);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.ep_CardServicios);
+        mRecyclerView = (RecyclerView) findViewById(R.id.CardRecycler);
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(this);
@@ -71,12 +73,12 @@ public class ListaFavorios extends AppCompatActivity {
         t2.setIdtienda(22);
         listaFavoritos.add(t2);
 
-        Favoritos fv=new Favoritos();
-        fv.setIdUsuario(1);
-        fv.setTiendas(listaFavoritos);
-        FavoritosDao pdao= FavoritosRepository.getInstance(ListaFavorios.this).getFavoritosBD().favoritosDao();
+        //Favoritos fv=new Favoritos();
+        //fv.setIdUsuario(1);
+        //fv.setTiendas(listaFavoritos);
+        //FavoritosDao pdao= FavoritosRepository.getInstance(ListaFavorios.this).getFavoritosBD().favoritosDao();
 
-        pdao.insertUserAndTiendas(fv);
+        //pdao.insertUserAndTiendas(fv);
     }
 
     public void recuperarFavoritos(int idUsuario){

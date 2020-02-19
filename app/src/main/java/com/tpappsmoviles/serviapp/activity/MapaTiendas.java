@@ -43,7 +43,7 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap mMap;
 
     private ArrayList<Tienda> tiendas=new ArrayList<>();
-
+    Integer idUsuario;
     private Spinner spinner;
 
 
@@ -57,6 +57,9 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
 
         spinner = (Spinner) findViewById(R.id.spinnerRubros);
         spinner.setAdapter(new ArrayAdapter<Rubro>(this, android.R.layout.simple_spinner_item, Rubro.values()));
+
+        Bundle extras = getIntent().getExtras();
+        idUsuario = extras.getInt("ID_USUARIO");
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -94,6 +97,7 @@ System.out.println("TAMAÑO AL CLIQUEAR "+tiendas.size());
                 int id = (int)(marker.getTag());
                 Intent i1 = new Intent(MapaTiendas.this, TiendaPerfil.class);
                 i1.putExtra("ID_TIENDA", id);
+                i1.putExtra("ID_USUARIO", idUsuario);
                 startActivity(i1);
             }
         });
@@ -218,7 +222,7 @@ System.out.println("TAMAÑO AL CLIQUEAR "+tiendas.size());
 
     public void listarTiendas(){
 
-
+        // TODO: 19/2/2020 Listar tiendas
        // tiendas = (ArrayList) TiendaRepository.getInstance().getListaTiendas();
         //System.out.println(tiendas.toString());
         TiendaRepository.getInstance().buscarTienda(9,miHandler);

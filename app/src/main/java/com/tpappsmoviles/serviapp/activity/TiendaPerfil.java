@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,9 +35,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.TiendaRepository;
+import dao.room.FavoritosDao;
+import dao.room.FavoritosRepository;
+import domain.Favoritos;
 import domain.Rubro;
 import domain.Servicio;
 import domain.Tienda;
+import domain.TiendaFavorita;
 
 public class TiendaPerfil extends AppCompatActivity implements OnMapReadyCallback {
     private RecyclerView mRecyclerView;
@@ -48,6 +53,7 @@ public class TiendaPerfil extends AppCompatActivity implements OnMapReadyCallbac
     private Tienda tienda= new Tienda();
     private TextView rubro;
     private Button telefono;
+    private Button favorito;
     private TextView direccion;
     private TextView horario;
     private ImageView imagen;
@@ -69,16 +75,47 @@ public class TiendaPerfil extends AppCompatActivity implements OnMapReadyCallbac
         direccion =(TextView) findViewById(R.id.at_Direccion);
         horario =(TextView) findViewById(R.id.at_Horario);
         imagen= (ImageView) findViewById(R.id.at_imagenTienda);
+        favorito= (Button) findViewById(R.id.btnAgregarFavorito);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.at_mapa);
         mapFragment.getMapAsync(this);
 
 
         Bundle extras = getIntent().getExtras();
-        Integer idTienda = extras.getInt("ID_TIENDA");
-        Log.d("Id recuperado en EditarPerfil", idTienda.toString());
+        final Integer idTienda = extras.getInt("ID_TIENDA");
+        final Integer idUsuario = extras.getInt("ID_USUARIO");
+        Log.d("IdTIENDA recuperado en TIENDA PERFIL", idTienda.toString());
+        Log.d("IdUSUARIO recuperado en TIENDA PERFIL", idUsuario.toString());
         TiendaRepository.getInstance().buscarTienda(idTienda,miHandler);
+
+        //FavoritosDao pdao= FavoritosRepository.getInstance(ListaFavorios.this).getFavoritosBD().favoritosDao();
+
+        //pdao.insertUserAndTiendas(fv);
+
+        final FavoritosDao pdao= FavoritosRepository.getInstance(TiendaPerfil.this).getFavoritosBD().favoritosDao();
+        final Favoritos fv=pdao.loadUsuarioAndTiendasById(idUsuario);
+
+        favorito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(pdao.contieneTienda(idUsuario,idTienda)==null){
+                    System.out.println("NO CONTIENE TIENDA");
+                    TiendaFavorita t = new TiendaFavorita();
+                    t.setIdtienda(tienda.getId());
+                    t.setNombre(tienda.getNombre());
+                    t.setRubro(tienda.getRubro());
+                    t.setHorarioDeAtencion(tienda.getHorarioDeAtencion());
+                    fv.getTiendas().add(t);
+                    pdao.insertUserAndTiendas(fv);
+                    showToast("Agregada a favoritos");
+                }
+                else { showToast("Ya se encuentra en favoritos");}
+            }
+        });
     }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

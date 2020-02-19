@@ -34,10 +34,17 @@ public abstract class FavoritosDao {
     @Query("SELECT * FROM Favoritos WHERE idUsuario = :id")
     public abstract Favoritos selectFavoritosByIdUsuario(int id);
 
+    @Query("SELECT * FROM Favoritos WHERE nombre = :nombre")
+    public abstract Favoritos selectFavoritosByNombreUsuario(String nombre);
+
 
     @Transaction
     @Query("SELECT * FROM Favoritos WHERE idUsuario =:id")
     public abstract UserAndTiendas loadUsuarioAndTiendasByIdUsuario(int id);
+
+    @Transaction
+    @Query("SELECT * FROM Favoritos WHERE nombre =:nombre")
+    public abstract UserAndTiendas loadUsuarioAndTiendasByIdUsuario(String nombre);
 
     @Transaction
     public void insertUserAndTiendas(Favoritos favorito) {
@@ -60,4 +67,16 @@ public abstract class FavoritosDao {
         fv.setTiendas(uat.getTiendas());
         return fv;
     }
+
+    @Transaction
+    public Favoritos loadUsuarioAndTiendasByNombre(String nombreUsuario) {
+        UserAndTiendas uat = loadUsuarioAndTiendasByIdUsuario(nombreUsuario);
+        Favoritos fv=new Favoritos();
+        fv=uat.getFavoritos();
+        fv.setTiendas(uat.getTiendas());
+        return fv;
+    }
+
+    @Query("SELECT * FROM TiendaFavorita WHERE idtienda = :idTienda AND idUsuarioFavorito= :idUsuario")
+    public abstract TiendaFavorita contieneTienda(int idUsuario,int idTienda);
 }
