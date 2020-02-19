@@ -6,9 +6,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.tpappsmoviles.serviapp.R;
-
-public class BroadcastNotificacion extends AppCompatActivity {
+public class BroadcastNotification extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
