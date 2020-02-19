@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +50,7 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        listarTiendas();
         setContentView(R.layout.activity_maps_tiendas);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapTiendas);
         mapFragment.getMapAsync(this);
@@ -58,6 +61,7 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Mapa de tiendas");
+
     }
 
 
@@ -66,7 +70,8 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
         mMap = googleMap;
         actualizarMapa();
 
-        listarTiendas();
+
+        System.out.println("TAMAÑO "+tiendas.size());
         cargarMarcadores("TODOS");
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -75,7 +80,7 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
                                                   mMap.clear();
 
                                                   cargarMarcadores(adapterView.getItemAtPosition(i).toString());
-
+System.out.println("TAMAÑO AL CLIQUEAR "+tiendas.size());
                                               }
 
                                               @Override
@@ -90,6 +95,25 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
                 Intent i1 = new Intent(MapaTiendas.this, TiendaPerfil.class);
                 i1.putExtra("ID_TIENDA", id);
                 startActivity(i1);
+            }
+        });
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(final Marker marker) {
+
+                View v = getLayoutInflater().inflate(R.layout.info_tienda_mapas, null);
+                TextView textView = (TextView) v.findViewById(R.id.itm_nombre);
+                textView.setText(marker.getTitle());
+
+                TextView descripcion = (TextView) v.findViewById(R.id.itm_telefono);
+                descripcion.setText(marker.getSnippet());
+                return v;
             }
         });
 
@@ -137,6 +161,7 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
         if(rubro.equals("TODOS")) todos=true;
 
 
+
         for (int i=0;i<tiendas.size();i++){
             if(rubro.equals(tiendas.get(i).getRubro().toString()) || todos){
                 switch (tiendas.get(i).getRubro()){
@@ -175,15 +200,14 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
                 }
 
                 titulo=tiendas.get(i).getNombre();
-                informacion=" Rubro: "+tiendas.get(i).getRubro().toString() + " Teléfono: " + tiendas.get(i).getTelefono();
-             //   LatLng coordenadas= new LatLng(tiendas.get(i).getLat(),tiendas.get(i).getLng());
-                LatLng coordenadas= new LatLng(-31,-60);
+                informacion= String.valueOf(tiendas.get(i).getTelefono());
+                LatLng coordenadas= new LatLng(tiendas.get(i).getLat(),tiendas.get(i).getLng());
+                //LatLng coordenadas= new LatLng(-31,-60);
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(coordenadas)
                         .title(titulo)
                         .snippet(informacion)
-                        .icon(bitmapDescriptor)
-                .draggable(true));
+                        .icon(bitmapDescriptor));
                 marker.setTag(tiendas.get(i).getId());
 
             }
@@ -197,9 +221,6 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
 
        // tiendas = (ArrayList) TiendaRepository.getInstance().getListaTiendas();
         //System.out.println(tiendas.toString());
-
-
-
         TiendaRepository.getInstance().buscarTienda(9,miHandler);
 
     }
@@ -210,6 +231,7 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
             switch (m.arg1){
                 case TiendaRepository._CONSULTA_TIENDA:
                     tiendas.add(TiendaRepository.getInstance().getListaTiendas().get(0));
+                    System.out.println("TERMINO BUSQUEDA. OBJETOS: "+tiendas.size());
                     //setParametros();
                     break;
                 case TiendaRepository._UPDATE_TIENDA:
