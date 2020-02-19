@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnFavoritos = (Button) findViewById(R.id.btnFavoritos);
         Button btnBuscarServicios = (Button) findViewById(R.id.btnBuscarServicios);
         Button btnVerMapa = (Button) findViewById(R.id.btnVerMapa);
+        Button btnPrueba = (Button) findViewById(R.id.btn_prueba);
 
         btnFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +53,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                   Intent intentMapa = new Intent(view.getContext() ,MapaTiendas.class);
                 startActivity(intentMapa);
+            }
+        });
+
+        btnPrueba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i1 = new Intent(view.getContext(), TiendaPerfil.class);
+                i1.putExtra("ID_TIENDA", 9);
+                startActivity(i1);
             }
         });
 

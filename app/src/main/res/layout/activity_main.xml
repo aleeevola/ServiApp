@@ -36,6 +36,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/recibir_notificaciones" />
+
+        <Button
+            android:id="@+id/btn_prueba"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Prueba" />
     </LinearLayout>
 
 </LinearLayout>

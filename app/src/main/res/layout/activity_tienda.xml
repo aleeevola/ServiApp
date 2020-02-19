@@ -219,10 +219,42 @@
                 android:layout_height="28dp"
                 android:text="@string/zona_de_trabajo" />
 
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/mapView"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="189dp" />
+                android:layout_height="300dp">
+
+                <fragment
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:map="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/at_mapa"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:context=".activity.MapaZonaTrabajo"
+                    map:uiRotateGestures="false"
+                    map:uiScrollGestures="false"
+                    map:uiTiltGestures="false"
+                    map:uiZoomGestures="false"
+                    />
+
+                <FrameLayout
+                    android:id="@+id/pin_view_line"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:drawable/ic_menu_mylocation"
+                    android:backgroundTint="@color/colorAccent"/>
+
+                <FrameLayout
+                    android:id="@+id/pin_cicle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_border" />
+            </FrameLayout>
+
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

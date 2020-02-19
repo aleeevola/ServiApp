@@ -43,22 +43,6 @@ public class MapaZonaTrabajo extends FragmentActivity implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         actualizarMapa();
-
-/*        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-            @Override
-            public void onMapLongClick(LatLng latLng) {
-
-                Intent i = new Intent();
-
-                double latitud=latLng.latitude;
-                double longitud=latLng.longitude;
-
-                i.putExtra("LATITUD",latitud);
-                i.putExtra("LONGITUD",longitud);
-                setResult(RESULT_OK,i);
-                finish();
-            }
-        });*/
     }
 
     private void guardarZona(){

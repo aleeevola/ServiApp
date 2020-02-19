@@ -1,11 +1,17 @@
 package com.tpappsmoviles.serviapp.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,114 +19,123 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.tpappsmoviles.serviapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.TiendaRepository;
 import domain.Rubro;
 import domain.Servicio;
 import domain.Tienda;
 
-public class TiendaPerfil extends AppCompatActivity {
+public class TiendaPerfil extends AppCompatActivity implements OnMapReadyCallback {
     private RecyclerView mRecyclerView;
     private ServiciosRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     public static List<Servicio> listaServicios =new ArrayList<>();
 
-    //ESTA TIENDA ES PARA MOSTAR LOS DATOS
     private Tienda tienda= new Tienda();
     private TextView rubro;
     private Button telefono;
     private TextView direccion;
     private TextView horario;
     private ImageView imagen;
+    private ActionBar actionBar;
+
+    private GoogleMap mMap;
+    private float zonaTrabajo;
+    private Double lat;
+    private Double lng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_tienda);
-
-        //setSupportActionBar((Toolbar) findViewById(R.id.toolbarListFavoritos));
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("Nombre tienda");
-
-        //listaP = PlatoRepository.getInstance().getListaPlatos();
-        //PlatoRepository.getInstance().listarPlatos(miHandler);
-
         rubro =(TextView) findViewById(R.id.at_RubroTienda);
         telefono = (Button) findViewById(R.id.at_btnLlamar);
         direccion =(TextView) findViewById(R.id.at_Direccion);
         horario =(TextView) findViewById(R.id.at_Horario);
         imagen= (ImageView) findViewById(R.id.at_imagenTienda);
 
-
-        /////////////
-        //CREO UNA TIENDA PARA MOSTRAR LOS DATOS,
-        //DEBE CARGARLOS DE LA BASE DE DATOS SUPONGO
-        //FALTA MOSTRAR LA FOTO
-        Tienda t1= new Tienda();
-        t1.setNombre("Hola");
-        t1.setRubro(Rubro.Mascotas);
-        t1.setTelefono(123456789);
-        t1.setDireccion("hernan cataneo");
-        t1.setHorarioDeAtencion("8:00 a 12:00");
-        //t1.setImagen();
-
-        Servicio s1 = new Servicio();
-        s1.setDescripcion("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        s1.setNombre("Cortar pelo");
-        s1.setPrecio((float) 222);
-
-        Servicio s2 = new Servicio();
-        s2.setDescripcion("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        s2.setNombre("Bañar");
-        s2.setPrecio((float) 33);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.at_mapa);
+        mapFragment.getMapAsync(this);
 
 
-        listaServicios.add(s1);
-        listaServicios.add(s2);
+        Bundle extras = getIntent().getExtras();
+        Integer idTienda = extras.getInt("ID_TIENDA");
+        Log.d("Id recuperado en EditarPerfil", idTienda.toString());
+        TiendaRepository.getInstance().buscarTienda(idTienda,miHandler);
+    }
 
-        tienda=t1;
-        /////////////
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        actualizarMapa();
 
-        setParametros();
+    }
+    private void actualizarMapa() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    9999);
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String
+            permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 9999: {
+                if (grantResults.length > 0 && grantResults[0] ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    actualizarMapa();
+                } else {
+                    return;
+                }
+            }
+        }
+    }
+
+    public void setParametros(){
+        actionBar.setTitle(tienda.getNombre());
+        rubro.setText(tienda.getRubro().toString());
+        telefono.setText(String.valueOf(tienda.getTelefono()));
+        direccion.setText(tienda.getDireccion());
+        horario.setText(tienda.getHorarioDeAtencion());
+        imagen.setImageBitmap(tienda.getImagen());
+        zonaTrabajo=tienda.getZonaTrabajo();
+        lat=tienda.getLat();
+        lng=tienda.getLng();
+        listaServicios=tienda.getServicios();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.at_CardRecycler);
         mRecyclerView.setHasFixedSize(true);
-
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new ServiciosRecyclerAdapter(listaServicios);
         mRecyclerView.setAdapter(mAdapter);
 
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng), zonaTrabajo));
     }
 
-    public void setParametros(){
-        rubro.setText(tienda.getRubro().toString());
-        telefono.setText(String.valueOf(tienda.getTelefono()));
-        direccion.setText(tienda.getDireccion());
-        horario.setText(tienda.getHorarioDeAtencion());
-        //imagen.setImageBitmap(tienda.getImagen());
-    }
-
-    /*
-    @Override
-    protected void onActivityResult(int requestCode, int
-            resultCode, @Nullable Intent data) {
-        if( resultCode== Activity.RESULT_OK){
-            if(requestCode==mAdapter.CODIGO_LISTA_PLATO){
-                mAdapter.notifyDataSetChanged();
-            }
-        }
-    }*/
 
 
     public void showToast(String txtToast){
@@ -128,22 +143,26 @@ public class TiendaPerfil extends AppCompatActivity {
         toast1.show();
     }
 
-    /*
     Handler miHandler = new Handler(Looper.myLooper()){
         @Override
         public void handleMessage(Message m){
-            listaP = PlatoRepository.getInstance().getListaPlatos();
             switch (m.arg1){
-                case PlatoRepository._CONSULTA_PLATO:
-                    mAdapter = new PlatoRecyclerAdapter(listaP,false);
-                    mRecyclerView.setAdapter(mAdapter);
+                case TiendaRepository._CONSULTA_TIENDA:
+                    tienda = TiendaRepository.getInstance().getListaTiendas().get(0);
+                    setParametros();
                     break;
-                case PlatoRepository._BORRADO_PLATO:
-                    mAdapter.notifyDataSetChanged();
+                case TiendaRepository._UPDATE_TIENDA:
+                    showToast("Datos guardados");
+                    break;
+                case TiendaRepository._ERROR_TIENDA:
+                    showToast("Se produjo en error");
+                    break;
+                default:
+                    Log.d("SERVIAPP", "Default handler EditarPerfilTienda");
                     break;
             }
         }
-    };*/
+    };
 
 
 }
