@@ -1,8 +1,13 @@
 package com.tpappsmoviles.serviapp.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -77,7 +83,18 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
                                               }
                                           }
         );
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                int id = (int)(marker.getTag());
+                Intent i1 = new Intent(MapaTiendas.this, TiendaPerfil.class);
+                i1.putExtra("ID_TIENDA", id);
+                startActivity(i1);
+            }
+        });
+
     }
+
 
     private void actualizarMapa() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -161,16 +178,19 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
                 informacion=" Rubro: "+tiendas.get(i).getRubro().toString() + " Teléfono: " + tiendas.get(i).getTelefono();
              //   LatLng coordenadas= new LatLng(tiendas.get(i).getLat(),tiendas.get(i).getLng());
                 LatLng coordenadas= new LatLng(-31,-60);
-                mMap.addMarker(new MarkerOptions()
+                Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(coordenadas)
                         .title(titulo)
                         .snippet(informacion)
-                        .icon(bitmapDescriptor));
+                        .icon(bitmapDescriptor)
+                .draggable(true));
+                marker.setTag(tiendas.get(i).getId());
 
             }
         }
 
     }
+
 
     public void listarTiendas(){
 
@@ -178,12 +198,30 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
        // tiendas = (ArrayList) TiendaRepository.getInstance().getListaTiendas();
         //System.out.println(tiendas.toString());
 
-        Tienda t1= new Tienda();
-        t1.setNombre("Hola");
-        t1.setRubro(Rubro.Mascotas);
-        t1.setTelefono(123456789);
-        t1.setDireccion("hernan cataneo");
-        t1.setHorarioDeAtencion("8:00 a 12:00");
-        tiendas.add(t1);
+
+
+        TiendaRepository.getInstance().buscarTienda(9,miHandler);
+
     }
+
+    Handler miHandler = new Handler(Looper.myLooper()){
+        @Override
+        public void handleMessage(Message m){
+            switch (m.arg1){
+                case TiendaRepository._CONSULTA_TIENDA:
+                    tiendas.add(TiendaRepository.getInstance().getListaTiendas().get(0));
+                    //setParametros();
+                    break;
+                case TiendaRepository._UPDATE_TIENDA:
+                    //showToast("Datos guardados");
+                    break;
+                case TiendaRepository._ERROR_TIENDA:
+                    //showToast("Se produjo en error");
+                    break;
+                default:
+                    Log.d("SERVIAPP", "Default handler EditarPerfilTienda");
+                    break;
+            }
+        }
+    };
 }
