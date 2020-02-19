@@ -55,8 +55,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // TODO: 19/2/2020 Lista de tiendas
                 // TODO: 19/2/2020 hacer reci
-                //Intent intentServicios = new Intent(view.getContext() ,EditarTiendaPerfil.class);
-                //startActivity(intentServicios);
+                Intent intentTiendas = new Intent(view.getContext() ,ListaTiendas.class);
+                intentTiendas.putExtra("ID_USUARIO", fv.getIdUsuario());
+                startActivity(intentTiendas);
             }
         });
 

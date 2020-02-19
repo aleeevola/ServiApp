@@ -75,7 +75,7 @@ public class ListaFavorios extends AppCompatActivity {
 
         //Favoritos fv=new Favoritos();
         //fv.setIdUsuario(1);
-        //fv.setTiendas(listaFavoritos);
+        //fv.setTiendas(listaTiendas);
         //FavoritosDao pdao= FavoritosRepository.getInstance(ListaFavorios.this).getFavoritosBD().favoritosDao();
 
         //pdao.insertUserAndTiendas(fv);
