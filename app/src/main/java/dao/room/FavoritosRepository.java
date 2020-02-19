@@ -7,22 +7,22 @@ import androidx.room.Room;
 import domain.Favoritos;
 
 public class FavoritosRepository {
-    private static FavoritosRepository PR = null;
+    private static FavoritosRepository FR = null;
     private FavoritosBD favoritosBD;
-    private FavoritosDao pedidoDao;
+    private FavoritosDao favoritosDao;
 
     private FavoritosRepository(Context ctx){
         favoritosBD = Room.databaseBuilder(ctx,
                 FavoritosBD.class, "favorito-db").allowMainThreadQueries().build();
 
-        pedidoDao= favoritosBD.favoritosDao();
+        favoritosDao = favoritosBD.favoritosDao();
     }
 
     public synchronized static FavoritosRepository getInstance(Context ctx){
-        if(PR ==null){
-            PR = new FavoritosRepository(ctx);
+        if(FR ==null){
+            FR = new FavoritosRepository(ctx);
         }
-        return PR;
+        return FR;
     }
 
     public FavoritosBD getFavoritosBD() {
@@ -30,17 +30,17 @@ public class FavoritosRepository {
     }
 
     public void insertFavoritos(Favoritos pedido){
-        pedidoDao.insertUserAndTiendas(pedido);
+        favoritosDao.insertUserAndTiendas(pedido);
     }
     public  void updateFavorio(Favoritos pedido){
-        pedidoDao.updateFavorito(pedido);
+        favoritosDao.updateFavorito(pedido);
     }
 
     public void deleteFavorito(Favoritos pedido){
-        pedidoDao.deleteFavorito(pedido);
+        favoritosDao.deleteFavorito(pedido);
     }
 
     public Favoritos selectFavoritosByIdUsuario(int id){
-        return pedidoDao.selectFavoritosByIdUsuario(id);
+        return favoritosDao.selectFavoritosByIdUsuario(id);
     }
 }
