@@ -52,7 +52,7 @@ public class TiendaPerfil extends AppCompatActivity implements OnMapReadyCallbac
 
     private Tienda tienda= new Tienda();
     private TextView rubro;
-    private Button telefono;
+    private Button telefono; // TODO: 19/2/2020 IMPLEMENTAR TELEFONO DIALER
     private Button favorito;
     private TextView direccion;
     private TextView horario;
