@@ -26,6 +26,15 @@
     <string name="hora_inicio"> 08:30 </string>
     <string name="hora_fin"> 17:30 </string>
 
+    <string name="texto_notificacion"> Texto notificación: </string>
+    <string name="tipo_notificacion"> Tipo notificación: </string>
+    <string name="enviar">Enviar</string>
+    <string name="cancelar">Cancelar</string>
+
+    <string-array name="tipoNotificacion">
+        <item>Oferta</item>
+        <item>Cambio de horario</item>
+    </string-array>
 
 
 

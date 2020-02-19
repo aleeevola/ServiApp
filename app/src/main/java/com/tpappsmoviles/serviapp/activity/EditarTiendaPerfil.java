@@ -2,6 +2,7 @@ package com.tpappsmoviles.serviapp.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +17,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,6 +32,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -70,6 +73,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     private Button btn_mapa;
     private Button btn_guardar;
     private Button btn_agregarServicio;
+    private Button btn_enviarnotificacion;
 
     private float zonaTrabajo;
     private Double lat;
@@ -100,6 +104,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         btn_mapa= (Button) findViewById(R.id.ep_btn_zonatrabajo);
         btn_guardar= (Button) findViewById(R.id.ep_btn_guardar);
         btn_agregarServicio= (Button) findViewById(R.id.ep_btn_agregarservicio);
+        btn_enviarnotificacion = (Button) findViewById(R.id.ep_btn_enviarnotificacion);
 
         btn_foto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +132,13 @@ public class EditarTiendaPerfil extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), MapaZonaTrabajo.class);
                 ((Activity) view.getContext()).startActivityForResult(i, RESULT_ZONA_TRABAJO);
+            }
+        });
+
+        btn_enviarnotificacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enviarNotificacion();
             }
         });
 
@@ -311,6 +323,55 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void enviarNotificacion(){
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // Get the layout inflater
+            LayoutInflater inflater = this.getLayoutInflater();
+
+        final String tipoNotificacion = ((Spinner) findViewById(R.id.dn_tipoNotificacion)).getSelectedItem().toString();
+        final String textoNotificacion = ((EditText) findViewById(R.id.dn_textoNotificacion)).getText().toString();
+            // Inflate and set the layout for the dialog
+            // Pass null as the parent view because its going in the dialog layout
+            builder.setView(inflater.inflate(R.layout.dialog_notificacion, null))
+                    // Add action buttons
+                    .setPositiveButton(R.string.enviar, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            // enviar notificacion broadcast
+
+                            Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.currentThread().sleep(5000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Intent i = new Intent();
+                                    i.putExtra("tipoNotificacion",tipoNotificacion);
+                                    i.putExtra("textoNotificacion",textoNotificacion);
+                                    i.setAction(MyReceiver.EVENTO_01);
+                                    sendBroadcast(i);
+                                }
+                            };
+                            Thread t1 = new Thread(r);
+                            t1.start();
+
+                        }
+                    })
+                    .setNegativeButton("Cancelar",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dlgInt, int i) {
+                                }
+                    });
+
+
+
     }
 
 
