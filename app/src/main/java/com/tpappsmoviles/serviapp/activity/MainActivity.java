@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         FavoritosDao pdao= FavoritosRepository.getInstance(MainActivity.this).getFavoritosBD().favoritosDao();
         final Favoritos fv=pdao.loadUsuarioAndTiendasByNombre(nombreUsuario);
 
-        recibirNotificacion(MyReceiver.getNotification("Texto notificacion"),2000);
+        getNotification("Lo q ta escrito aca");
       /*  BroadcastReceiver br = new MyReceiver();
         IntentFilter filtro = new IntentFilter();
         filtro.addAction(getPackageName() + MyReceiver._NOTIFICACION_FAVORITOS);
@@ -121,7 +121,21 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-    private void recibirNotificacion (Notification notification , int delay) {
+
+    public Notification getNotification (String content) {
+        //String tipoNotificacion = intent.getStringExtra("tipoNotificacion");
+        //String textoNotificacion = intent.getStringExtra("textoNotificacion");
+       // Integer idTienda = Integer.parseInt(intent.getStringExtra("idTienda"));
+        //String nombreTienda = intent.getStringExtra("nombreTienda");
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this , default_notification_channel_id ) ;
+        builder.setContentTitle("nombreTienda + :  + tipoNotificacion") ;
+        builder.setContentText("textoNotificacion") ;
+        builder.setSmallIcon(R.drawable. ic_launcher_foreground ) ;
+        builder.setAutoCancel( true ) ;
+        builder.setChannelId( NOTIFICATION_CHANNEL_ID ) ;
+        return builder.build() ;
+    }
+ /*   private void recibirNotificacion (Notification notification , int delay) {
         Intent notificationIntent = new Intent( this, MyReceiver.class ) ;
         notificationIntent.putExtra(MyReceiver.NOTIFICATION_ID , 1 ) ;
         notificationIntent.putExtra(MyReceiver.NOTIFICATION , notification) ;
@@ -131,6 +145,6 @@ public class MainActivity extends AppCompatActivity {
         assert alarmManager != null;
         alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , futureInMillis , pendingIntent) ;
     }
-
+*/
 
 }

@@ -2,7 +2,11 @@ package com.tpappsmoviles.serviapp.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -360,6 +365,20 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                     i.setAction(MyReceiver.NOTIFICATION);
                                     sendBroadcast(i);
                                     Log.d("EDITAR TIENDA PERFIL", "despues de send broadcast");
+
+
+                                  //  private void enviarNotificacion (Notification notification , int delay) {
+                                        Intent notificationIntent = new Intent(customLayout.getContext(), MyReceiver.class ) ;
+                                        notificationIntent.putExtra(MyReceiver.NOTIFICATION_ID , 1 ) ;
+                                        notificationIntent.putExtra(MyReceiver.NOTIFICATION , "noti") ;
+                                        PendingIntent pendingIntent = PendingIntent. getBroadcast ( customLayout.getContext(), 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT ) ;
+                                        long futureInMillis = SystemClock. elapsedRealtime () + 2000 ;
+                                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
+                                        assert alarmManager != null;
+                                        alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , futureInMillis , pendingIntent) ;
+                                   // }
+
+
                                 }
                             };
                             Thread t1 = new Thread(r);

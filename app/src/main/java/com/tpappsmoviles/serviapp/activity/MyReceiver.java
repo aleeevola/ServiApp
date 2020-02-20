@@ -76,13 +76,14 @@ public class MyReceiver extends BroadcastReceiver {
  */
 
 import static com.tpappsmoviles.serviapp.activity.MainActivity. NOTIFICATION_CHANNEL_ID ;
-import static com.tpappsmoviles.serviapp.activity.MainActivity. default_notification_channel_id;
 public class MyReceiver extends BroadcastReceiver {
-    static Context context1;
     public static String NOTIFICATION_ID = "notification-id" ;
     public static String NOTIFICATION = "notification" ;
     public void onReceive (Context context , Intent intent) {
-        context1=context;
+        String tipoNotificacion = intent.getStringExtra("tipoNotificacion");
+        String textoNotificacion = intent.getStringExtra("textoNotificacion");
+        Integer idTienda = Integer.parseInt(intent.getStringExtra("idTienda"));
+        String nombreTienda = intent.getStringExtra("nombreTienda");
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context. NOTIFICATION_SERVICE ) ;
         Notification notification = intent.getParcelableExtra( NOTIFICATION ) ;
         if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O ) {
@@ -96,14 +97,4 @@ public class MyReceiver extends BroadcastReceiver {
         notificationManager.notify(id , notification) ;
     }
 
-
-    public static Notification getNotification (String content) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context1 , default_notification_channel_id ) ;
-        builder.setContentTitle( "Scheduled Notification" ) ;
-        builder.setContentText(content) ;
-        builder.setSmallIcon(R.drawable. ic_launcher_foreground ) ;
-        builder.setAutoCancel( true ) ;
-        builder.setChannelId( NOTIFICATION_CHANNEL_ID ) ;
-        return builder.build() ;
-    }
 }
