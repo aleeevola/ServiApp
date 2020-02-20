@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
         FavoritosDao pdao= FavoritosRepository.getInstance(MainActivity.this).getFavoritosBD().favoritosDao();
         final Favoritos fv=pdao.loadUsuarioAndTiendasByNombre(nombreUsuario);
 
-        getNotification("Lo q ta escrito aca");
-      /*  BroadcastReceiver br = new MyReceiver();
+       // getNotification("Lo q ta escrito aca");
+        BroadcastReceiver br = new MyReceiver();
         IntentFilter filtro = new IntentFilter();
         filtro.addAction(getPackageName() + MyReceiver._NOTIFICACION_FAVORITOS);
         getApplication().getApplicationContext().registerReceiver(br, filtro);
-*/
+
       //  this.registerReceiver(br, filtro);
 
 

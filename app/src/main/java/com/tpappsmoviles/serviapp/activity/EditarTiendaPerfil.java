@@ -362,22 +362,9 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                     i.putExtra("textoNotificacion",textoNotificacion);
                                     i.putExtra("idTienda", tienda.getId());
                                     i.putExtra("nombreTienda", tienda.getNombre());
-                                    i.setAction(MyReceiver.NOTIFICATION);
+                                    i.setAction(MyReceiver._NOTIFICACION_FAVORITOS);
                                     sendBroadcast(i);
                                     Log.d("EDITAR TIENDA PERFIL", "despues de send broadcast");
-
-
-                                  //  private void enviarNotificacion (Notification notification , int delay) {
-                                        Intent notificationIntent = new Intent(customLayout.getContext(), MyReceiver.class ) ;
-                                        notificationIntent.putExtra(MyReceiver.NOTIFICATION_ID , 1 ) ;
-                                        notificationIntent.putExtra(MyReceiver.NOTIFICATION , "noti") ;
-                                        PendingIntent pendingIntent = PendingIntent. getBroadcast ( customLayout.getContext(), 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT ) ;
-                                        long futureInMillis = SystemClock. elapsedRealtime () + 2000 ;
-                                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
-                                        assert alarmManager != null;
-                                        alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , futureInMillis , pendingIntent) ;
-                                   // }
-
 
                                 }
                             };

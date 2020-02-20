@@ -18,8 +18,6 @@ import com.tpappsmoviles.serviapp.R;
 import static com.tpappsmoviles.serviapp.activity.MainActivity. NOTIFICATION_CHANNEL_ID ;
 public class MyReceiver extends BroadcastReceiver {
     public static final String _NOTIFICACION_FAVORITOS  = "_NOTIFICACION_FAVORITOS";
-    public static String NOTIFICATION_ID = "notification-id" ;
-    public static String NOTIFICATION = "notification" ;
     public static final int NOTIFICACION_ID = 123;
     public static final String CHANNEL_ID="notificacion_favoritos";
     Context context1;
@@ -28,14 +26,16 @@ public class MyReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d("SERVIAPP","REcibido "+intent.getAction());
         Toast.makeText(context,"=>"+intent.getAction(),Toast.LENGTH_LONG).show();
-
+        context1 = context;
         String tipoNotificacion = intent.getStringExtra("tipoNotificacion");
         String textoNotificacion = intent.getStringExtra("textoNotificacion");
         Integer idTienda = Integer.parseInt(intent.getStringExtra("idTienda"));
         String nombreTienda = intent.getStringExtra("nombreTienda");
 
         int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
-        //CREO EL INSTENT DE MAIN PARA PASARLO A LA NOTIFICACION
+
+        //CREO EL INTENT DE MAIN PARA PASARLO A LA NOTIFICACION
+
         Intent destino = new Intent(context, MainActivity.class);
         destino.putExtra("tipoNotificacion",tipoNotificacion);
         destino.putExtra("textoNotificacion",textoNotificacion);
@@ -43,30 +43,20 @@ public class MyReceiver extends BroadcastReceiver {
         destino.putExtra("nombreTienda", nombreTienda);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, uniqueInt, destino, 0);
+
         Log.d("RECEIVER", "EN EL MEDIO");
-       // createNotificationChannel();
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context. NOTIFICATION_SERVICE ) ;
-        Notification notification = intent.getParcelableExtra( NOTIFICATION ) ;
-        if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O ) {
-            int importance = NotificationManager. IMPORTANCE_HIGH ;
-            NotificationChannel notificationChannel = new NotificationChannel( NOTIFICATION_CHANNEL_ID , "NOTIFICATION_CHANNEL_NAME" , importance) ;
-            assert notificationManager != null;
-            notificationManager.createNotificationChannel(notificationChannel) ;
-        }
-        int id = intent.getIntExtra( NOTIFICATION_ID , 0 ) ;
-        assert notificationManager != null;
-        notificationManager.notify(id , notification) ;
+        createNotificationChannel();
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context, CHANNEL_ID)
+                new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                         .setSmallIcon(R.drawable.logo)
-                        .setContentTitle(nombreTienda + ": " + tipoNotificacion)
-                        .setContentText(textoNotificacion)
+                        .setContentTitle("Nuevo plato en oferta")
+                        .setContentText(nombreTienda +": "+tipoNotificacion)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
 
-        NotificationManagerCompat notificationManagerC = NotificationManagerCompat.from(context);
-        notificationManagerC.notify(NOTIFICACION_ID, mBuilder.build());
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(NOTIFICACION_ID, mBuilder.build());
         Log.d("RECEIVER ", "AL FINAL");
     }
 
@@ -77,17 +67,11 @@ public class MyReceiver extends BroadcastReceiver {
             CharSequence name = "Notificacion favoritos";
             String description = "descripcion";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-
-
-
-
-        /*    NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
             NotificationManager notificationManager = (NotificationManager) context1.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
 
-
-         */
         }
     }
 
