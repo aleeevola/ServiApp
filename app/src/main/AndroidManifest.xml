@@ -36,7 +36,7 @@
 
         <receiver android:name=".activity.MyReceiver" android:exported="true">
             <intent-filter>
-                <action android:name="Serviapp.NOTIFICACION_FAVORITOS"/>
+                <action android:name="Serviapp._NOTIFICACION_FAVORITOS"/>
             </intent-filter>
         </receiver>
 
