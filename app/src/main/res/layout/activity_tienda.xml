@@ -104,7 +104,7 @@
                         android:textAlignment="textStart"
                         android:textColor="@color/colorTextoInfoTienda"
                         android:textSize="@dimen/dimInfoTienda"
-                        android:paddingLeft="5dp"/>
+                        android:paddingLeft="5dp" />
                 </LinearLayout>
 
                 <LinearLayout

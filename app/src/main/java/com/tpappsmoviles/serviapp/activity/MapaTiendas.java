@@ -84,7 +84,7 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
                                                   mMap.clear();
 
                                                   cargarMarcadores(adapterView.getItemAtPosition(i).toString());
-System.out.println("TAMAÑO AL CLIQUEAR "+tiendas.size());
+                                                    System.out.println("TAMAÑO AL CLIQUEAR "+tiendas.size());
                                               }
 
                                               @Override
@@ -236,9 +236,12 @@ System.out.println("TAMAÑO AL CLIQUEAR "+tiendas.size());
         public void handleMessage(Message m){
             switch (m.arg1){
                 case TiendaRepository._CONSULTA_TIENDA:
+                    spinner.setEnabled(false);
                     //tiendas.add(TiendaRepository.getInstance().getListaTiendas().get(0));
                     tiendas = TiendaRepository.getInstance().getListaTiendas();
                     System.out.println("TERMINO BUSQUEDA. OBJETOS: "+tiendas.size());
+                    spinner.setEnabled(true);
+                    cargarMarcadores("TODOS");
                     //setParametros();
                     break;
                 case TiendaRepository._UPDATE_TIENDA:

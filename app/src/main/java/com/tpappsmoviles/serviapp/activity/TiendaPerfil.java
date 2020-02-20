@@ -1,6 +1,7 @@
 package com.tpappsmoviles.serviapp.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -52,7 +53,7 @@ public class TiendaPerfil extends AppCompatActivity implements OnMapReadyCallbac
 
     private Tienda tienda= new Tienda();
     private TextView rubro;
-    private Button telefono; // TODO: 19/2/2020 IMPLEMENTAR TELEFONO DIALER
+    private Button telefono;
     private Button favorito;
     private TextView direccion;
     private TextView horario;
@@ -113,6 +114,15 @@ public class TiendaPerfil extends AppCompatActivity implements OnMapReadyCallbac
                 else { showToast("Ya se encuentra en favoritos");}
             }
         });
+
+        telefono.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:"+telefono.getText()));
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -159,6 +169,7 @@ public class TiendaPerfil extends AppCompatActivity implements OnMapReadyCallbac
         horario.setText(tienda.getHorarioDeAtencion());
         imagen.setImageBitmap(tienda.getImagen());
         zonaTrabajo=tienda.getZonaTrabajo();
+        System.out.println("zona "+zonaTrabajo);
         lat=tienda.getLat();
         lng=tienda.getLng();
         listaServicios=tienda.getServicios();

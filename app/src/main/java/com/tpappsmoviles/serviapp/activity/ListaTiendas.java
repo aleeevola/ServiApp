@@ -29,7 +29,7 @@ public class ListaTiendas extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private TiendaRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+private Integer idUsuario;
 
     public static List<Tienda> listaTiendas =new ArrayList<>();
 
@@ -45,17 +45,11 @@ public class ListaTiendas extends AppCompatActivity {
 
 
         Bundle extras = getIntent().getExtras();
-        Integer idUsuario = extras.getInt("ID_USUARIO");
+        idUsuario = extras.getInt("ID_USUARIO");
         //recuperarFavoritos(idUsuario);*/
         listaTiendas.clear();
         CargarTindas();
-        mRecyclerView = (RecyclerView) findViewById(R.id.CardRecycler);
-        mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(ListaTiendas.this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new TiendaRecyclerAdapter(listaTiendas,idUsuario);
-        mRecyclerView.setAdapter(mAdapter);
 
     }
 
@@ -70,6 +64,7 @@ public class ListaTiendas extends AppCompatActivity {
         //esta asi ranciovich para mostrar 2
         //TiendaRepository.getInstance().buscarTienda(9,miHandler);
         //TiendaRepository.getInstance().buscarTienda(13,miHandler);
+
     }
 
 
@@ -80,8 +75,13 @@ public class ListaTiendas extends AppCompatActivity {
                 case TiendaRepository._CONSULTA_TIENDA:
                     //listaTiendas.add(TiendaRepository.getInstance().getListaTiendas().get(0));
                     listaTiendas = TiendaRepository.getInstance().getListaTiendas();
-                    System.out.println("hola");
-                    mAdapter.notifyDataSetChanged();
+                    System.out.println("size "+listaTiendas.size());
+                    mRecyclerView = (RecyclerView) findViewById(R.id.CardRecycler);
+                    mRecyclerView.setHasFixedSize(true);
+                    mLayoutManager = new LinearLayoutManager(ListaTiendas.this);
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+                    mAdapter = new TiendaRecyclerAdapter(listaTiendas,idUsuario);
+                    mRecyclerView.setAdapter(mAdapter);
                     break;
                 case TiendaRepository._UPDATE_TIENDA:
                     showToast("Datos guardados");
