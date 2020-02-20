@@ -42,12 +42,19 @@ public class ListaTiendas extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("Buscar Tiendas");
 
-        /*
+
         Bundle extras = getIntent().getExtras();
         Integer idUsuario = extras.getInt("ID_USUARIO");
-        recuperarFavoritos(idUsuario);*/
-        CargarTindaEjemplo();
+        //recuperarFavoritos(idUsuario);*/
+        listaTiendas.clear();
+        CargarTindas();
+        mRecyclerView = (RecyclerView) findViewById(R.id.CardRecycler);
+        mRecyclerView.setHasFixedSize(true);
 
+        mLayoutManager = new LinearLayoutManager(ListaTiendas.this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new TiendaRecyclerAdapter(listaTiendas,idUsuario);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
@@ -56,24 +63,13 @@ public class ListaTiendas extends AppCompatActivity {
         toast1.show();
     }
 
-    public void CargarTindaEjemplo(){
+    public void CargarTindas(){
+        // TODO: 19/2/2020 ACA TIENE QUE CARGAR LA LISTA DE TIENDAS
+        //esta asi ranciovich para mostrar 2
+        TiendaRepository.getInstance().buscarTienda(9,miHandler);
         TiendaRepository.getInstance().buscarTienda(13,miHandler);
-
-        //Favoritos fv=new Favoritos();
-        //fv.setIdUsuario(1);
-        //fv.setTiendas(listaTiendas);
-        //FavoritosDao pdao= FavoritosRepository.getInstance(ListaFavorios.this).getFavoritosBD().favoritosDao();
-
-        //pdao.insertUserAndTiendas(fv);
     }
 
-    public void recuperarFavoritos(int idUsuario){
-       /* FavoritosDao pdao= FavoritosRepository.getInstance(ListaTiendas.this).getFavoritosBD().favoritosDao();
-
-        Favoritos fv=pdao.loadUsuarioAndTiendasById(idUsuario);
-        listaTiendas =fv.getTiendas();
-        System.out.println(fv.toString());*/
-    }
 
     Handler miHandler = new Handler(Looper.myLooper()){
         @Override
@@ -82,13 +78,7 @@ public class ListaTiendas extends AppCompatActivity {
                 case TiendaRepository._CONSULTA_TIENDA:
                     listaTiendas.add(TiendaRepository.getInstance().getListaTiendas().get(0));
                     System.out.println("hola");
-                    mRecyclerView = (RecyclerView) findViewById(R.id.CardRecycler);
-                    mRecyclerView.setHasFixedSize(true);
-
-                    mLayoutManager = new LinearLayoutManager(ListaTiendas.this);
-                    mRecyclerView.setLayoutManager(mLayoutManager);
-                    mAdapter = new TiendaRecyclerAdapter(listaTiendas);
-                    mRecyclerView.setAdapter(mAdapter);
+                    mAdapter.notifyDataSetChanged();
                     break;
                 case TiendaRepository._UPDATE_TIENDA:
                     showToast("Datos guardados");

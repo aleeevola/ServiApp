@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view"
+    android:id="@+id/ft_card_tienda"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
@@ -19,20 +19,20 @@
         android:orientation="vertical">
 
         <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/ft_imagen"
-                android:layout_width="wrap_content"
-                android:layout_height="110dp"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
                 android:scaleType="centerCrop"
                 tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <ImageView
                 android:id="@+id/degrade"
                 android:layout_width="match_parent"
-                android:layout_height="110dp"
+                android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/oscurecedor" />
 
@@ -67,24 +67,24 @@
                         android:id="@+id/ft_rubroTienda"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
                         android:layout_weight="1"
+                        android:gravity="left"
                         android:text="Rubro"
                         android:textColor="@color/colorTextoInfoTienda"
                         android:textSize="15dp"
                         android:textStyle="italic"
-                        android:typeface="monospace"
-                        android:layout_gravity="bottom"
-                        android:gravity="left"/>
+                        android:typeface="monospace" />
 
                     <TextView
                         android:id="@+id/ft_horarioAtencion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Horario"
-                        android:textColor="@color/colorTextoInfoTienda"
                         android:layout_gravity="bottom"
-                        android:gravity="right"/>
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="Horario"
+                        android:textColor="@color/colorTextoInfoTienda" />
                 </LinearLayout>
             </LinearLayout>
 
