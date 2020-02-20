@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnVerMapa;
 
     public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
-    private final static String default_notification_channel_id = "default" ;
+    public final static String default_notification_channel_id = "default" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         FavoritosDao pdao= FavoritosRepository.getInstance(MainActivity.this).getFavoritosBD().favoritosDao();
         final Favoritos fv=pdao.loadUsuarioAndTiendasByNombre(nombreUsuario);
 
-        recibirNotificacion(getNotification("Texto notificacion"),2000);
+        recibirNotificacion(MyReceiver.getNotification("Texto notificacion"),2000);
       /*  BroadcastReceiver br = new MyReceiver();
         IntentFilter filtro = new IntentFilter();
         filtro.addAction(getPackageName() + MyReceiver._NOTIFICACION_FAVORITOS);
@@ -132,13 +132,5 @@ public class MainActivity extends AppCompatActivity {
         alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , futureInMillis , pendingIntent) ;
     }
 
-    private Notification getNotification (String content) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder( this, default_notification_channel_id ) ;
-        builder.setContentTitle( "Scheduled Notification" ) ;
-        builder.setContentText(content) ;
-        builder.setSmallIcon(R.drawable. ic_launcher_foreground ) ;
-        builder.setAutoCancel( true ) ;
-        builder.setChannelId( NOTIFICATION_CHANNEL_ID ) ;
-        return builder.build() ;
-    }
+
 }

@@ -357,7 +357,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                     i.putExtra("textoNotificacion",textoNotificacion);
                                     i.putExtra("idTienda", tienda.getId());
                                     i.putExtra("nombreTienda", tienda.getNombre());
-                                    i.setAction(MyReceiver._NOTIFICACION_FAVORITOS);
+                                    i.setAction(MyReceiver.NOTIFICATION);
                                     sendBroadcast(i);
                                     Log.d("EDITAR TIENDA PERFIL", "despues de send broadcast");
                                 }
