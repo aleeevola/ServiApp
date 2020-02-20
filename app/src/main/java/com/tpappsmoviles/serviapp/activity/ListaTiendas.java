@@ -30,6 +30,7 @@ public class ListaTiendas extends AppCompatActivity {
     private TiendaRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+
     public static List<Tienda> listaTiendas =new ArrayList<>();
 
     @Override
@@ -64,10 +65,11 @@ public class ListaTiendas extends AppCompatActivity {
     }
 
     public void CargarTindas(){
+        TiendaRepository.getInstance().listarTienda(miHandler);
         // TODO: 19/2/2020 ACA TIENE QUE CARGAR LA LISTA DE TIENDAS
         //esta asi ranciovich para mostrar 2
-        TiendaRepository.getInstance().buscarTienda(9,miHandler);
-        TiendaRepository.getInstance().buscarTienda(13,miHandler);
+        //TiendaRepository.getInstance().buscarTienda(9,miHandler);
+        //TiendaRepository.getInstance().buscarTienda(13,miHandler);
     }
 
 
@@ -76,7 +78,8 @@ public class ListaTiendas extends AppCompatActivity {
         public void handleMessage(Message m){
             switch (m.arg1){
                 case TiendaRepository._CONSULTA_TIENDA:
-                    listaTiendas.add(TiendaRepository.getInstance().getListaTiendas().get(0));
+                    //listaTiendas.add(TiendaRepository.getInstance().getListaTiendas().get(0));
+                    listaTiendas = TiendaRepository.getInstance().getListaTiendas();
                     System.out.println("hola");
                     mAdapter.notifyDataSetChanged();
                     break;

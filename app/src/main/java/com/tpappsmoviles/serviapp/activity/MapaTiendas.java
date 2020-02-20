@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.tpappsmoviles.serviapp.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dao.TiendaRepository;
 import domain.Rubro;
@@ -42,7 +43,7 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
-    private ArrayList<Tienda> tiendas=new ArrayList<>();
+    private List<Tienda> tiendas=new ArrayList<>();
     Integer idUsuario;
     private Spinner spinner;
 
@@ -223,9 +224,10 @@ System.out.println("TAMAÑO AL CLIQUEAR "+tiendas.size());
     public void listarTiendas(){
 
         // TODO: 19/2/2020 Listar tiendas
+        TiendaRepository.getInstance().listarTienda(miHandler);
        // tiendas = (ArrayList) TiendaRepository.getInstance().getListaTiendas();
         //System.out.println(tiendas.toString());
-        TiendaRepository.getInstance().buscarTienda(9,miHandler);
+        //TiendaRepository.getInstance().buscarTienda(9,miHandler);
 
     }
 
@@ -234,7 +236,8 @@ System.out.println("TAMAÑO AL CLIQUEAR "+tiendas.size());
         public void handleMessage(Message m){
             switch (m.arg1){
                 case TiendaRepository._CONSULTA_TIENDA:
-                    tiendas.add(TiendaRepository.getInstance().getListaTiendas().get(0));
+                    //tiendas.add(TiendaRepository.getInstance().getListaTiendas().get(0));
+                    tiendas = TiendaRepository.getInstance().getListaTiendas();
                     System.out.println("TERMINO BUSQUEDA. OBJETOS: "+tiendas.size());
                     //setParametros();
                     break;
