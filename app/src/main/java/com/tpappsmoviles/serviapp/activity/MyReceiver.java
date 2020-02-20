@@ -16,10 +16,10 @@ import androidx.core.app.NotificationManagerCompat;
 import com.tpappsmoviles.serviapp.R;
 
 public class MyReceiver extends BroadcastReceiver {
-    public static final String _NOTIFICACION_FAVORITOS  = "NOTIFICACION_FAVORITOS";
+    public static final String _NOTIFICACION_FAVORITOS  = "_NOTIFICACION_FAVORITOS";
 
     public static final int NOTIFICACION_ID = 123;
-    public static final String CHANNEL_ID="notificacion_oferta";
+    public static final String CHANNEL_ID="notificacion_favoritos";
     Context context1;
 
     @Override

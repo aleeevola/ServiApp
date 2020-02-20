@@ -45,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
         BroadcastReceiver br = new MyReceiver();
         IntentFilter filtro = new IntentFilter();
         filtro.addAction(getPackageName() + MyReceiver._NOTIFICACION_FAVORITOS);
-     //   getApplication().getApplicationContext().registerReceiver(br, filtro);
+        getApplication().getApplicationContext().registerReceiver(br, filtro);
 
-        this.registerReceiver(br, filtro);
+      //  this.registerReceiver(br, filtro);
 
 
         btnFavoritos.setOnClickListener(new View.OnClickListener() {

@@ -26,9 +26,12 @@ public class TiendaRepository {
     //Jo S2
     //public static String _SERVER = "http://10.0.2.2:5000/";
 
+    //json-server --watch tiendas.json --port 5000 --host  192.168.1.28
+    public static String _SERVER = "http://192.168.1.28:5000";
+
     //ale
     //json-server --watch tiendas.json --port 5000 --host 192.168.0.3
-    public static String _SERVER = "http://192.168.0.3:5000";
+   // public static String _SERVER = "http://192.168.0.3:5000";
 
     private List<Tienda> listaTiendas;
 
