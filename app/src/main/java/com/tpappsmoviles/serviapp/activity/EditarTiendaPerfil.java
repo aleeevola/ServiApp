@@ -5,15 +5,20 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -355,9 +360,18 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
+
+                                    BroadcastReceiver br = new MyReceiver();
+                                    IntentFilter filtro = new IntentFilter();
+                                    filtro.addAction(MyIntentService._NOTIFICACION_FAVORITOS);
+                                    // getApplication().getApplicationContext().registerReceiver(br, filtro);
+                                    registerReceiver(br,filtro);
+                                    Log.d(MyReceiver.TAG," CLICK EN BOTON");
+                                    MyIntentService.startActionBaz(EditarTiendaPerfil.this,"HOLA 1","BROADCAST 1");
+
                                     final String tipoNotificacion = ((Spinner) customLayout.findViewById(R.id.dn_tipoNotificacion)).getSelectedItem().toString();
                                     final String textoNotificacion = ((EditText) customLayout.findViewById(R.id.dn_textoNotificacion)).getText().toString();
-                                    Intent i = new Intent();
+                            /*        Intent i = new Intent();
                                     i.putExtra("tipoNotificacion",tipoNotificacion);
                                     i.putExtra("textoNotificacion",textoNotificacion);
                                     i.putExtra("idTienda", tienda.getId());
@@ -365,7 +379,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                     i.setAction(MyReceiver._NOTIFICACION_FAVORITOS);
                                     sendBroadcast(i);
                                     Log.d("EDITAR TIENDA PERFIL", "despues de send broadcast");
-
+                                */
                                 }
                             };
                             Thread t1 = new Thread(r);
@@ -407,5 +421,26 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         }
     };
 
+    /*
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(br);
+    }
+
+     */
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "CANAL1";
+            String description = "MI CANAL 1";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("999", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 
 }

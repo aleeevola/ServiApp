@@ -44,5 +44,8 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
+    //Dependencias Firebase
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+
 
 }

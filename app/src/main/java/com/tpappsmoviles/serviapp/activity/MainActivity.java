@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnBuscarServicios;
     private Button btnVerMapa;
 
+    BroadcastReceiver br;
+
     public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
     public final static String default_notification_channel_id = "default" ;
 
@@ -50,14 +52,15 @@ public class MainActivity extends AppCompatActivity {
         FavoritosDao pdao= FavoritosRepository.getInstance(MainActivity.this).getFavoritosBD().favoritosDao();
         final Favoritos fv=pdao.loadUsuarioAndTiendasByNombre(nombreUsuario);
 
+        /*
        // getNotification("Lo q ta escrito aca");
-        BroadcastReceiver br = new MyReceiver();
+        br = new MyReceiver();
         IntentFilter filtro = new IntentFilter();
-        filtro.addAction(getPackageName() + MyReceiver._NOTIFICACION_FAVORITOS);
-        getApplication().getApplicationContext().registerReceiver(br, filtro);
-
+        filtro.addAction(EditarTiendaPerfil._NOTIFICACION_FAVORITOS);
+       // getApplication().getApplicationContext().registerReceiver(br, filtro);
+        this.registerReceiver(br,filtro);
       //  this.registerReceiver(br, filtro);
-
+*/
 
         btnFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override

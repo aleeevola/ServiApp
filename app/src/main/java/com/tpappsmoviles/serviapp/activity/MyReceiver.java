@@ -19,6 +19,7 @@ import static com.tpappsmoviles.serviapp.activity.MainActivity. NOTIFICATION_CHA
 public class MyReceiver extends BroadcastReceiver {
     public static final String _NOTIFICACION_FAVORITOS  = "_NOTIFICACION_FAVORITOS";
     public static final int NOTIFICACION_ID = 123;
+    public static final String TAG = "NOTI-FAVORITOS";
     public static final String CHANNEL_ID="notificacion_favoritos";
     Context context1;
 
@@ -45,7 +46,7 @@ public class MyReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, uniqueInt, destino, 0);
 
         Log.d("RECEIVER", "EN EL MEDIO");
-        createNotificationChannel();
+      //  createNotificationChannel();
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                         .setSmallIcon(R.drawable.logo)
@@ -55,14 +56,17 @@ public class MyReceiver extends BroadcastReceiver {
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
 
+        Notification n = mBuilder.build();
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(NOTIFICACION_ID, mBuilder.build());
+        notificationManager.notify(NOTIFICACION_ID, n);
+    //   NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+    //    notificationManager.notify(NOTIFICACION_ID, mBuilder.build());
         Log.d("RECEIVER ", "AL FINAL");
     }
 
 
 
-    private void createNotificationChannel() {
+/*    private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Notificacion favoritos";
             String description = "descripcion";
@@ -74,6 +78,8 @@ public class MyReceiver extends BroadcastReceiver {
 
         }
     }
+
+ */
 
 }
 
