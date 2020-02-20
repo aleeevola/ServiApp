@@ -1,10 +1,15 @@
 package com.tpappsmoviles.serviapp.activity;
 
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +20,7 @@ import android.widget.Switch;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.tpappsmoviles.serviapp.R;
 
@@ -26,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private Button btnFavoritos;
     private Button btnBuscarServicios;
     private Button btnVerMapa;
+
+    public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
+    private final static String default_notification_channel_id = "default" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
         FavoritosDao pdao= FavoritosRepository.getInstance(MainActivity.this).getFavoritosBD().favoritosDao();
         final Favoritos fv=pdao.loadUsuarioAndTiendasByNombre(nombreUsuario);
 
-
-        BroadcastReceiver br = new MyReceiver();
+        recibirNotificacion(getNotification("Texto notificacion"),2000);
+      /*  BroadcastReceiver br = new MyReceiver();
         IntentFilter filtro = new IntentFilter();
         filtro.addAction(getPackageName() + MyReceiver._NOTIFICACION_FAVORITOS);
         getApplication().getApplicationContext().registerReceiver(br, filtro);
-
+*/
       //  this.registerReceiver(br, filtro);
 
 
@@ -111,4 +120,25 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
+
+    private void recibirNotificacion (Notification notification , int delay) {
+        Intent notificationIntent = new Intent( this, MyReceiver.class ) ;
+        notificationIntent.putExtra(MyReceiver.NOTIFICATION_ID , 1 ) ;
+        notificationIntent.putExtra(MyReceiver.NOTIFICATION , notification) ;
+        PendingIntent pendingIntent = PendingIntent. getBroadcast ( this, 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT ) ;
+        long futureInMillis = SystemClock. elapsedRealtime () + delay ;
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
+        assert alarmManager != null;
+        alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , futureInMillis , pendingIntent) ;
+    }
+
+    private Notification getNotification (String content) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder( this, default_notification_channel_id ) ;
+        builder.setContentTitle( "Scheduled Notification" ) ;
+        builder.setContentText(content) ;
+        builder.setSmallIcon(R.drawable. ic_launcher_foreground ) ;
+        builder.setAutoCancel( true ) ;
+        builder.setChannelId( NOTIFICATION_CHANNEL_ID ) ;
+        return builder.build() ;
+    }
 }
