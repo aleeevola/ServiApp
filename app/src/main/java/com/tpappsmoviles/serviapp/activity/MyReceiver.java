@@ -78,19 +78,37 @@ public class MyReceiver extends BroadcastReceiver {
 import static com.tpappsmoviles.serviapp.activity.MainActivity. NOTIFICATION_CHANNEL_ID ;
 public class MyReceiver extends BroadcastReceiver {
     public static String NOTIFICATION_ID = "notification-id" ;
+    public static int NOTIFICACION_ID =123;
     public static String NOTIFICATION = "notification" ;
     public void onReceive (Context context , Intent intent) {
         String tipoNotificacion = intent.getStringExtra("tipoNotificacion");
         String textoNotificacion = intent.getStringExtra("textoNotificacion");
         Integer idTienda = Integer.parseInt(intent.getStringExtra("idTienda"));
         String nombreTienda = intent.getStringExtra("nombreTienda");
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context. NOTIFICATION_SERVICE ) ;
+        Intent destino = new Intent(context, MainActivity.class);
+        destino.putExtra("tipoNotificacion",tipoNotificacion);
+        destino.putExtra("textoNotificacion",textoNotificacion);
+        destino.putExtra("idTienda", idTienda);
+        destino.putExtra("nombreTienda", nombreTienda);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 3, destino, 0);
+        //NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context. NOTIFICATION_SERVICE ) ;
         Notification notification = intent.getParcelableExtra( NOTIFICATION ) ;
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+                        .setSmallIcon(R.drawable.logo)
+                        .setContentTitle(nombreTienda + ": " + tipoNotificacion)
+                        .setContentText(textoNotificacion)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(NOTIFICACION_ID, mBuilder.build());
         if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O ) {
-            int importance = NotificationManager. IMPORTANCE_HIGH ;
+            int importance = NotificationManager.IMPORTANCE_DEFAULT ;
             NotificationChannel notificationChannel = new NotificationChannel( NOTIFICATION_CHANNEL_ID , "NOTIFICATION_CHANNEL_NAME" , importance) ;
             assert notificationManager != null;
-            notificationManager.createNotificationChannel(notificationChannel) ;
+            //notificationManager.createNotificationChannel(notificationChannel) ;
         }
         int id = intent.getIntExtra( NOTIFICATION_ID , 0 ) ;
         assert notificationManager != null;
