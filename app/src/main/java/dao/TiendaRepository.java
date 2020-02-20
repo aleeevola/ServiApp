@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -129,8 +130,10 @@ public class TiendaRepository {
             @Override
             public void onResponse(Call<List<Tienda>> call, Response<List<Tienda>> response) {
                 if(response.isSuccessful()){
+                    Log.d("RESPUESTA SUCCESSUFL","EN LISTAR TIENDA");
                     listaTiendas.clear();
                     listaTiendas.addAll(response.body());
+                    Log.d("TAMAÑO LISTATIENDAS","  " +listaTiendas.size());
                     Message m = new Message();
                     m.arg1 = _CONSULTA_TIENDA;
                     h.sendMessage(m);

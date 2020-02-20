@@ -25,7 +25,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 public interface TiendaRest {
 
 
-        @GET("tiendas/")
+        @GET("/tiendas")
         Call<List<Tienda>> buscarTodas();
 
         @GET("/tiendas")

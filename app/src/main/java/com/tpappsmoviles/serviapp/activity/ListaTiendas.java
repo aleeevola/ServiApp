@@ -47,7 +47,7 @@ private Integer idUsuario;
         Bundle extras = getIntent().getExtras();
         idUsuario = extras.getInt("ID_USUARIO");
         //recuperarFavoritos(idUsuario);*/
-        listaTiendas.clear();
+        //listaTiendas.clear();
         CargarTindas();
 
 

@@ -1,7 +1,9 @@
 package com.tpappsmoviles.serviapp.activity;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +40,15 @@ public class MainActivity extends AppCompatActivity {
         String nombreUsuario = extras.getString("NOMBRE_USUARIO");
         FavoritosDao pdao= FavoritosRepository.getInstance(MainActivity.this).getFavoritosBD().favoritosDao();
         final Favoritos fv=pdao.loadUsuarioAndTiendasByNombre(nombreUsuario);
+
+
+        BroadcastReceiver br = new MyReceiver();
+        IntentFilter filtro = new IntentFilter();
+        filtro.addAction(getPackageName() + MyReceiver._NOTIFICACION_FAVORITOS);
+     //   getApplication().getApplicationContext().registerReceiver(br, filtro);
+
+        this.registerReceiver(br, filtro);
+
 
         btnFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
