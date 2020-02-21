@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "555998363880",
+    "firebase_url": "https://serviapp-f8628.firebaseio.com",
+    "project_id": "serviapp-f8628",
+    "storage_bucket": "serviapp-f8628.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555998363880:android:3a38b023abbfb78f26095d",
+        "android_client_info": {
+          "package_name": "com.tpappsmoviles.serviapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "555998363880-crsmtcvbn81fheqnrsiilstu5dfc2s98.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbr7PKl8eczzm7-3W4JaWxDH17o5ddRI8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "555998363880-crsmtcvbn81fheqnrsiilstu5dfc2s98.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
