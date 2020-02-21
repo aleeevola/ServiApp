@@ -3,11 +3,14 @@ package com.tpappsmoviles.serviapp.activity;
 
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -21,12 +24,16 @@ import android.widget.Switch;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.tpappsmoviles.serviapp.R;
 
 import dao.room.FavoritosDao;
 import dao.room.FavoritosRepository;
 import domain.Favoritos;
+
+import static com.tpappsmoviles.serviapp.activity.MyReceiver.NOTIFICACION_ID;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnFavoritos;
@@ -52,6 +59,43 @@ public class MainActivity extends AppCompatActivity {
         FavoritosDao pdao= FavoritosRepository.getInstance(MainActivity.this).getFavoritosBD().favoritosDao();
         final Favoritos fv=pdao.loadUsuarioAndTiendasByNombre(nombreUsuario);
 
+        btnPrueba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view,"ACCION", Snackbar.LENGTH_LONG)
+                        .setAction("Action",null).show();
+            }
+        });
+
+
+        br = new MyReceiver();
+        IntentFilter filtro = new IntentFilter();
+        Intent i = new Intent();
+        createNotificationChannel();
+        filtro.addAction(MyIntentService._NOTIFICACION_FAVORITOS);
+        getApplication().getApplicationContext().registerReceiver(br, filtro);
+        registerReceiver(br,filtro);
+     //   Bundle extras2 = br.getResultExtras(true);
+     //   br.onReceive(this,i);
+//        String tipoNotificacion = extras2.getString("tipoNotificacion");
+//        String textoNotificacion = extras2.getString("textoNotificacion");
+//        Integer idTienda = Integer.parseInt(intent.getStringExtra("idTienda"));
+ //       String nombreTienda = extras2.getString("nombreTienda");
+
+/*        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(getApplication().getApplicationContext(), NOTIFICATION_CHANNEL_ID)
+                        .setSmallIcon(R.drawable.logo)
+                        .setContentTitle("EL DE MAIN")
+                        .setContentText("aaaaaaaaaaa")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+    //                    .setContentIntent(br.)
+                        .setAutoCancel(true);
+
+        Notification n = mBuilder.build();
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplication().getApplicationContext());
+        notificationManager.notify(NOTIFICACION_ID, n);
+
+*/
         /*
        // getNotification("Lo q ta escrito aca");
         br = new MyReceiver();
@@ -93,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*
         btnPrueba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i1);
             }
         });
-
+*/
         //setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -150,4 +195,24 @@ public class MainActivity extends AppCompatActivity {
     }
 */
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(br);
+    }
+
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "CANAL1";
+            String description = "MI CANAL 1";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("999", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 }

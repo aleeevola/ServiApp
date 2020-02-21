@@ -9,7 +9,7 @@ public class MyIntentService extends IntentService {
 
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    public static final String _NOTIFICACION_FAVORITOS = "com.tpappsmoviles.serviapp.NOTIFICACION_FAVORITOS";
+    public static final String _NOTIFICACION_FAVORITOS = "com.tpappsmoviles.serviapp._NOTIFICACION_FAVORITOS";
   //  public static final String ENVIAR_NOTIF2 = "com.example.ejemplobroadcast.action.NOT2";
 
 

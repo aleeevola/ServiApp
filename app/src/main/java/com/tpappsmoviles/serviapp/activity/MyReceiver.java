@@ -28,10 +28,12 @@ public class MyReceiver extends BroadcastReceiver {
         Log.d("SERVIAPP","REcibido "+intent.getAction());
         Toast.makeText(context,"=>"+intent.getAction(),Toast.LENGTH_LONG).show();
         context1 = context;
-        String tipoNotificacion = intent.getStringExtra("tipoNotificacion");
-        String textoNotificacion = intent.getStringExtra("textoNotificacion");
-        Integer idTienda = Integer.parseInt(intent.getStringExtra("idTienda"));
+        String tipoNotificacion = intent.getStringExtra("EXTRA_PARAM3");
+        String textoNotificacion = intent.getStringExtra("EXTRA_PARAM4");
+//        Integer idTienda = Integer.parseInt(intent.getStringExtra("idTienda"));
         String nombreTienda = intent.getStringExtra("nombreTienda");
+
+        context1=context;
 
         int uniqueInt = (int) (System.currentTimeMillis() & 0xfffffff);
 
@@ -40,18 +42,18 @@ public class MyReceiver extends BroadcastReceiver {
         Intent destino = new Intent(context, MainActivity.class);
         destino.putExtra("tipoNotificacion",tipoNotificacion);
         destino.putExtra("textoNotificacion",textoNotificacion);
-        destino.putExtra("idTienda", idTienda);
-        destino.putExtra("nombreTienda", nombreTienda);
+  //      destino.putExtra("idTienda", idTienda);
+  //      destino.putExtra("nombreTienda", nombreTienda);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, uniqueInt, destino, 0);
-
+     //   PendingIntent pendingIntent = PendingIntent.getBroadcast(context, uniqueInt, destino, 0);
         Log.d("RECEIVER", "EN EL MEDIO");
-      //  createNotificationChannel();
+        //createNotificationChannel();
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                         .setSmallIcon(R.drawable.logo)
-                        .setContentTitle("Nuevo plato en oferta")
-                        .setContentText(nombreTienda +": "+tipoNotificacion)
+                        .setContentTitle(nombreTienda + ": " + tipoNotificacion)
+                        .setContentText(textoNotificacion)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
@@ -66,7 +68,7 @@ public class MyReceiver extends BroadcastReceiver {
 
 
 
-/*    private void createNotificationChannel() {
+    private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Notificacion favoritos";
             String description = "descripcion";
@@ -79,7 +81,7 @@ public class MyReceiver extends BroadcastReceiver {
         }
     }
 
- */
+
 
 }
 

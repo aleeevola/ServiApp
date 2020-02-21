@@ -92,6 +92,8 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     private static int RESULT_ZONA_TRABAJO = 2;
 
+    BroadcastReceiver br;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,7 +150,14 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         btn_enviarnotificacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                enviarNotificacion();
+                enviarNotificacion(v);
+        //        BroadcastReceiver br = new MyReceiver();
+        //        IntentFilter filtro = new IntentFilter();
+        //        Intent i = new Intent();
+//        filtro.getAction(0);
+        //        createNotificationChannel();
+        //        filtro.addAction(MyIntentService._NOTIFICACION_FAVORITOS);
+        //        getApplication().getApplicationContext().registerReceiver(br, filtro);
             }
         });
 
@@ -335,7 +344,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         dialog.show();
     }
 
-    public void enviarNotificacion(){
+    public void enviarNotificacion(final View view){
 
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -356,30 +365,29 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.currentThread().sleep(5000);
+                                        Thread.currentThread().sleep(2000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
 
-                                    BroadcastReceiver br = new MyReceiver();
-                                    IntentFilter filtro = new IntentFilter();
-                                    filtro.addAction(MyIntentService._NOTIFICACION_FAVORITOS);
-                                    // getApplication().getApplicationContext().registerReceiver(br, filtro);
-                                    registerReceiver(br,filtro);
+                                    //createNotificationChannel();
+
                                     Log.d(MyReceiver.TAG," CLICK EN BOTON");
                                     MyIntentService.startActionBaz(EditarTiendaPerfil.this,"HOLA 1","BROADCAST 1");
-
+/*
                                     final String tipoNotificacion = ((Spinner) customLayout.findViewById(R.id.dn_tipoNotificacion)).getSelectedItem().toString();
                                     final String textoNotificacion = ((EditText) customLayout.findViewById(R.id.dn_textoNotificacion)).getText().toString();
-                            /*        Intent i = new Intent();
+                                    Intent i = new Intent();
                                     i.putExtra("tipoNotificacion",tipoNotificacion);
                                     i.putExtra("textoNotificacion",textoNotificacion);
                                     i.putExtra("idTienda", tienda.getId());
                                     i.putExtra("nombreTienda", tienda.getNombre());
                                     i.setAction(MyReceiver._NOTIFICACION_FAVORITOS);
-                                    customLayout.getContext().sendBroadcast(i);
+                                    view.getContext().sendBroadcast(i);
+
+*/
                                     Log.d("EDITAR TIENDA PERFIL", "despues de send broadcast");
-                                */
+
                                 }
                             };
                             Thread t1 = new Thread(r);
@@ -421,14 +429,14 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         }
     };
 
-    /*
+/*
     @Override
     protected void onDestroy() {
         super.onDestroy();
         this.unregisterReceiver(br);
     }
+*/
 
-     */
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

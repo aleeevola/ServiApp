@@ -1,6 +1,5 @@
 {
   "tiendas": [
-    
     {
       "direccion": "aaa",
       "horarioDeAtencion": "12:30 a 20:30",
@@ -80,6 +79,12 @@
           "id": 0,
           "nombre": "Paisajismo",
           "precio": 220
+        },
+        {
+          "descripcion": "asssse",
+          "id": 0,
+          "nombre": "nuevo",
+          "precio": 555
         }
       ],
       "telefono": 0,
