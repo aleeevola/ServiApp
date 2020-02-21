@@ -84,7 +84,29 @@ public class MainActivity extends AppCompatActivity {
         filtro.addAction(MyIntentService._NOTIFICACION_FAVORITOS);
         getApplication().getApplicationContext().registerReceiver(br, filtro);
         registerReceiver(br,filtro);
-        
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("token", "getInstanceId failed", task.getException());
+                    return;
+                }
+
+                // Get new Instance ID token
+               // String token = task.getResult().getToken();
+
+              //  Favoritos.token = token;
+              //  SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+               // SharedPreferences.Editor editor = preferences.edit();
+              //  editor.putString("token", token);
+               //    editor.apply();
+                // Log and toast
+              //  String msg = "El token es: " + token;
+             //   Log.d("token", msg);
+            }
+        });
+
 
         for(TiendaFavorita t: fv.getTiendas()) {
             FirebaseMessaging.getInstance().subscribeToTopic(t.getNombre())
