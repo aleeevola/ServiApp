@@ -21,8 +21,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+//import android.os.Message;
 import android.os.Looper;
-import android.os.Message;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -48,7 +48,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.messaging.MulticastMessage;
+import com.google.firebase.messaging.SendResponse;
 import com.tpappsmoviles.serviapp.R;
 
 import java.io.ByteArrayInputStream;
@@ -372,8 +374,13 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
-
-                                    sendToTopic(tipoNotificacion,textoNotificacion);
+                                    final String tipoNotificacion = ((Spinner) customLayout.findViewById(R.id.dn_tipoNotificacion)).getSelectedItem().toString();
+                                    final String textoNotificacion = ((EditText) customLayout.findViewById(R.id.dn_textoNotificacion)).getText().toString();
+                                    try {
+                                        sendToTopic(tipoNotificacion,textoNotificacion);
+                                    } catch (FirebaseMessagingException e) {
+                                        e.printStackTrace();
+                                    }
                                     //createNotificationChannel();
 
                                    // Log.d(MyReceiver.TAG," CLICK EN BOTON");
@@ -416,7 +423,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
 
     Handler miHandler = new Handler(Looper.myLooper()){
         @Override
-        public void handleMessage(Message m){
+        public void handleMessage(android.os.Message m){
             switch (m.arg1){
                 case TiendaRepository._CONSULTA_TIENDA:
                     tienda = TiendaRepository.getInstance().getListaTiendas().get(0);
@@ -467,6 +474,11 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                 .putData("tipoNotificacion", tipoNotificacion)
                 .putData("textoNotificacion", textoNotificacion)
                 .setTopic(topic)
+                .build();
+
+        RemoteMessage m = new RemoteMessage.Builder("mensaje")
+                .addData("tipoNotificacion", tipoNotificacion)
+                .addData("textoNotificacion", textoNotificacion)
                 .build();
 
         // Send a message to the devices subscribed to the provided topic.
