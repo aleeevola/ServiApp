@@ -84,25 +84,7 @@ public class MainActivity extends AppCompatActivity {
         filtro.addAction(MyIntentService._NOTIFICACION_FAVORITOS);
         getApplication().getApplicationContext().registerReceiver(br, filtro);
         registerReceiver(br,filtro);
-
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("Main ACtivity", "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        String msg = getString(1, token);
-                        Log.d("MainActivity", msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        
 
         for(TiendaFavorita t: fv.getTiendas()) {
             FirebaseMessaging.getInstance().subscribeToTopic(t.getNombre())

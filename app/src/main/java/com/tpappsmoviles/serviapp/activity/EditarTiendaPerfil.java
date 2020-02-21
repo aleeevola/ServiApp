@@ -45,12 +45,6 @@ import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-//import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.RemoteMessage;
-import com.google.firebase.messaging.MulticastMessage;
-import com.google.firebase.messaging.SendResponse;
 import com.tpappsmoviles.serviapp.R;
 
 import java.io.ByteArrayInputStream;
@@ -376,12 +370,9 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                     }
                                     final String tipoNotificacion = ((Spinner) customLayout.findViewById(R.id.dn_tipoNotificacion)).getSelectedItem().toString();
                                     final String textoNotificacion = ((EditText) customLayout.findViewById(R.id.dn_textoNotificacion)).getText().toString();
-                                    try {
-                                        FirebaseMessagingSnippets.sendToTopic(tipoNotificacion,textoNotificacion,tienda.getNombre());
-                                    } catch (FirebaseMessagingException e) {
-                                        e.printStackTrace();
-                                    }
-                                    //createNotificationChannel();
+
+                                    MyFirebaseMessagingService.sendPushNotification(tienda.getNombre(), tipoNotificacion, textoNotificacion);
+                                   //createNotificationChannel();
 
                                    // Log.d(MyReceiver.TAG," CLICK EN BOTON");
                                    // MyIntentService.startActionBaz(EditarTiendaPerfil.this,"HOLA 1","BROADCAST 1");

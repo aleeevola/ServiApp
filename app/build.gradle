@@ -46,8 +46,8 @@ dependencies {
 
     //Dependencias Firebase
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
-    implementation 'com.google.firebase:firebase-core:17.0.0'
-    implementation 'com.google.firebase:firebase-admin:6.9.0'
+    //implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation 'com.google.firebase:firebase-functions:19.0.1'
 
 
 }

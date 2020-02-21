@@ -10,97 +10,97 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.tpappsmoviles.serviapp.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public MyFirebaseMessagingService() {
     }
 
+    private static FirebaseFunctions mFunctions;
+
+
+    public static Task<String> sendPushNotification(String nombreTienda, String tipoNotificacion, String textoNotificacion) {
+        // Create the arguments to the callable function.
+        Map<String, Object> data = new HashMap<>();
+        data.put("nombreTienda", nombreTienda);
+        data.put("tipoNotificacion", tipoNotificacion);
+        data.put("textoNotificacion", textoNotificacion);
+
+        if(mFunctions == null){
+            mFunctions = FirebaseFunctions.getInstance();
+        }
+
+        return mFunctions
+                .getHttpsCallable("sendNotification")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        String result = (String) task.getResult().getData();
+                        return result;
+                    }
+                });
+    }
+
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
-        // ...
+    public void onCreate() {
+        super.onCreate();
+        Log.d("token", "Se crea el service");
+    }
 
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d("MyFirebaseMessagingService", "From: " + remoteMessage.getFrom());
+    @Override
+    public void onNewToken(@NonNull String s) {
+        super.onNewToken(s);
+        Log.d("token","Nuevo token: "+s);
+    }
 
-        // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
-            Log.d("MyFirebaseMessagingService", "Message data payload: " + remoteMessage.getData());
-
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-                //scheduleJob();
-            } else {
-                // Handle message within 10 seconds
-                //handleNow();
+    @Override
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+        Log.d("token", "onMessageReceiver()");
+        if(remoteMessage.getData().size() >0){
+            String nombreTienda = remoteMessage.getData().get("nombreTienda");
+            String tipoNotificacion = remoteMessage.getData().get("tipoNotificacion");
+            String textoNotificacion = remoteMessage.getData().get("textoNotificacion");
+            if(nombreTienda != null && tipoNotificacion != null && textoNotificacion != null){
+                int pedidoId = Integer.parseInt(nombreTienda);
+                sendNotification(pedidoId, tipoNotificacion, textoNotificacion);
             }
-
         }
-
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d("MyFirebaseMessagingService", "Message Notification Body: " + remoteMessage.getNotification().getBody());
-
-         //   FirebaseNotification.notify(getApplicationContext(),remoteMessage.getNotification().getBody(),1);
-        }
-
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
     }
 
-    /**
-     * Called if InstanceID token is updated. This may occur if the security of
-     * the previous token had been compromised. Note that this is called when the InstanceID token
-     * is initially generated so this is where you would retrieve the token.
-     */
-    @Override
-    public void onNewToken(String token) {
-        Log.d("MyFirebaseMessagingService", "Refreshed token: " + token);
-
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // Instance ID token to your app server.
-        sendRegistrationToServer(token);
-    }
-
-    private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
-    }
-
-
-    private void sendNotification(String messageBody) {
+    private void sendNotification(int nombreTienda, String tipoNotificacion, String textoNotificacion) {
+        //TODO ir a la actividad ver pedido.
         Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("nombreTienda", nombreTienda);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        String channelId = getString(R.string.default_notification_channel_id);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
+                new NotificationCompat.Builder(this, getString(R.string.CHANNEL_ID))
                         .setSmallIcon(R.drawable.logo)
-                        .setContentTitle("Título")
-                        .setContentText(messageBody)
+                        .setContentTitle(nombreTienda+": "+tipoNotificacion)
+                        .setContentText(textoNotificacion)
                         .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(0 , notificationBuilder.build());
     }
+
 }
