@@ -45,7 +45,10 @@ import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.MulticastMessage;
 import com.tpappsmoviles.serviapp.R;
 
 import java.io.ByteArrayInputStream;
@@ -370,10 +373,11 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                         e.printStackTrace();
                                     }
 
+                                    sendToTopic(tipoNotificacion,textoNotificacion);
                                     //createNotificationChannel();
 
-                                    Log.d(MyReceiver.TAG," CLICK EN BOTON");
-                                    MyIntentService.startActionBaz(EditarTiendaPerfil.this,"HOLA 1","BROADCAST 1");
+                                   // Log.d(MyReceiver.TAG," CLICK EN BOTON");
+                                   // MyIntentService.startActionBaz(EditarTiendaPerfil.this,"HOLA 1","BROADCAST 1");
 /*
                                     final String tipoNotificacion = ((Spinner) customLayout.findViewById(R.id.dn_tipoNotificacion)).getSelectedItem().toString();
                                     final String textoNotificacion = ((EditText) customLayout.findViewById(R.id.dn_textoNotificacion)).getText().toString();
@@ -386,7 +390,9 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                     view.getContext().sendBroadcast(i);
 
 */
-                                    Log.d("EDITAR TIENDA PERFIL", "despues de send broadcast");
+                                   // Log.d("EDITAR TIENDA PERFIL", "despues de send broadcast");
+
+
 
                                 }
                             };
@@ -449,6 +455,25 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                     getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    public void sendToTopic(String tipoNotificacion, String textoNotificacion) throws FirebaseMessagingException {
+        // [START send_to_topic]
+        // The topic name can be optionally prefixed with "/topics/".
+        String topic = tienda.getNombre();
+
+        // See documentation on defining a message payload.
+        Message message = Message.builder()
+                .putData("tipoNotificacion", tipoNotificacion)
+                .putData("textoNotificacion", textoNotificacion)
+                .setTopic(topic)
+                .build();
+
+        // Send a message to the devices subscribed to the provided topic.
+        String response = FirebaseMessaging.getInstance().send(message);
+        // Response is a message ID string.
+        System.out.println("Successfully sent message: " + response);
+        // [END send_to_topic]
     }
 
 }

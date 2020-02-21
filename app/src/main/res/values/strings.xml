@@ -30,6 +30,9 @@
     <string name="tipo_notificacion"> Tipo notificación: </string>
     <string name="enviar">Enviar</string>
     <string name="cancelar">Cancelar</string>
+    <string name="default_notification_channel_id">1001</string>
+    <string name="msg_subscribed">3</string>
+    <string name="msg_subscribe_failed">9</string>
 
     <string-array name="tipoNotificacion">
         <item>Oferta</item>
