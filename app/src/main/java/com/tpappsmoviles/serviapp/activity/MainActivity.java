@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -93,17 +94,17 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Get new Instance ID token
-               // String token = task.getResult().getToken();
+              //   Get new Instance ID token
+                String token = task.getResult().getToken();
 
-              //  Favoritos.token = token;
-              //  SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
-               // SharedPreferences.Editor editor = preferences.edit();
-              //  editor.putString("token", token);
-               //    editor.apply();
+                Favoritos.token = token;
+                SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("token", token);
+                   editor.apply();
                 // Log and toast
-              //  String msg = "El token es: " + token;
-             //   Log.d("token", msg);
+                String msg = "El token es: " + token;
+                Log.d("token", msg);
             }
         });
 
