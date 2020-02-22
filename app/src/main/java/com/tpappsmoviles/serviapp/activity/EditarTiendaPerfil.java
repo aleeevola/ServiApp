@@ -153,7 +153,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mFunctions = FirebaseFunctions.getInstance();
-                enviarNotificacion(v);
+                enviarNotificacion();
         //        BroadcastReceiver br = new MyReceiver();
         //        IntentFilter filtro = new IntentFilter();
         //        Intent i = new Intent();
@@ -347,7 +347,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         dialog.show();
     }
 
-    public void enviarNotificacion(final View view){
+    public void enviarNotificacion(){
 
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -392,7 +392,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                     view.getContext().sendBroadcast(i);
 
 */
-                                   // Log.d("EDITAR TIENDA PERFIL", "despues de send broadcast");
+                                    Log.d("EDITAR TIENDA PERFIL", "despues de send broadcast");
 
 
 

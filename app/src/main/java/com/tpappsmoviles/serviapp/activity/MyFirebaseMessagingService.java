@@ -37,7 +37,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         data.put("nombreTienda", nombreTienda);
         data.put("tipoNotificacion", tipoNotificacion);
         data.put("textoNotificacion", textoNotificacion);
-
+Log.d("SEND PUSH NOTIFICATION", "tienda: "+nombreTienda);
         if(mFunctions == null){
             mFunctions = FirebaseFunctions.getInstance();
         }
@@ -52,6 +52,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         // has failed then getResult() will throw an Exception which will be
                         // propagated down.
                         String result = (String) task.getResult().getData();
+                        Log.d("SEND PUSH NOTIFICATION", result);
                         return result;
                     }
                 });
@@ -72,6 +73,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         Log.d("token", "onMessageReceiver()");
+        Log.d("token", "size data: "+remoteMessage.getData().size());
         if(remoteMessage.getData().size() >0){
             String nombreTienda = remoteMessage.getData().get("nombreTienda");
             String tipoNotificacion = remoteMessage.getData().get("tipoNotificacion");
@@ -85,7 +87,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(int nombreTienda, String tipoNotificacion, String textoNotificacion) {
         //TODO ir a la actividad ver pedido.
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, EditarTiendaPerfil.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("nombreTienda", nombreTienda);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
