@@ -32,6 +32,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -51,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
     BroadcastReceiver br;
 
-    public static final String NOTIFICATION_CHANNEL_ID = "10001" ;
-    public final static String default_notification_channel_id = "default" ;
+    public static final String NOTIFICATION_CHANNEL_ID = "1" ;
+    public final static String default_notification_channel_id = "1001" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

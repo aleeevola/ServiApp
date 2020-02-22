@@ -10,7 +10,7 @@ admin.initializeApp();
     const message = {
         topic: data.nombreTienda,
         nombreTienda:{
-            nombreTienda: data.nombreTiendao,
+            nombreTienda: data.nombreTienda,
             tipoNotificacion: data.tipoNotificacion,
             textoNotificacion: data.textoNotificacion
         }

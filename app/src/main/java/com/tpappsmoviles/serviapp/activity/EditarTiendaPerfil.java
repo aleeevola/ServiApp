@@ -45,6 +45,8 @@ import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.functions.FirebaseFunctions;
 import com.tpappsmoviles.serviapp.R;
 
 import java.io.ByteArrayInputStream;
@@ -64,6 +66,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ServiciosRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private FirebaseFunctions mFunctions;
 
     public static List<Servicio> listaServicios =new ArrayList<>();
 
@@ -149,6 +152,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         btn_enviarnotificacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mFunctions = FirebaseFunctions.getInstance();
                 enviarNotificacion(v);
         //        BroadcastReceiver br = new MyReceiver();
         //        IntentFilter filtro = new IntentFilter();
