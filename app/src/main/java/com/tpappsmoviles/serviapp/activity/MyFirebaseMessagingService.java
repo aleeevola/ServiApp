@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+    private static final String CHANNEL_ID = "1001";
+
     public MyFirebaseMessagingService() {
     }
 
@@ -74,35 +76,50 @@ Log.d("SEND PUSH NOTIFICATION", "tienda: "+nombreTienda);
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         Log.d("token", "onMessageReceiver()");
         Log.d("token", "size data: "+remoteMessage.getData().size());
+        System.out.println("EJECUTO ON MESSAGERECEIVED");
         if(remoteMessage.getData().size() >0){
             String nombreTienda = remoteMessage.getData().get("nombreTienda");
             String tipoNotificacion = remoteMessage.getData().get("tipoNotificacion");
             String textoNotificacion = remoteMessage.getData().get("textoNotificacion");
             if(nombreTienda != null && tipoNotificacion != null && textoNotificacion != null){
-                int pedidoId = Integer.parseInt(nombreTienda);
-                sendNotification(pedidoId, tipoNotificacion, textoNotificacion);
+                System.out.println("nombreTienda" + nombreTienda);
+                System.out.println("tipoNotificacion" + tipoNotificacion);
+                System.out.println("textoNotificacion" + textoNotificacion);
+//                int pedidoId = Integer.parseInt(nombreTienda);
+                sendNotification(nombreTienda, tipoNotificacion, textoNotificacion);
             }
         }
     }
 
-    private void sendNotification(int nombreTienda, String tipoNotificacion, String textoNotificacion) {
-        //TODO ir a la actividad ver pedido.
-        Intent intent = new Intent(this, EditarTiendaPerfil.class);
+    private void sendNotification(String nombreTienda, String tipoNotificacion, String textoNotificacion) {
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("nombreTienda", nombreTienda);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, getString(R.string.CHANNEL_ID))
+                new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                         .setSmallIcon(R.drawable.logo)
                         .setContentTitle(nombreTienda+": "+tipoNotificacion)
                         .setContentText(textoNotificacion)
-                        .setAutoCancel(true)
-                        .setContentIntent(pendingIntent);
-
+                        .setAutoCancel(true);
+                //        .setContentIntent(pendingIntent);
+createNotificationChannel();
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         notificationManager.notify(0 , notificationBuilder.build());
     }
 
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Notificacion favoritos";
+            String description = "descripcion";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+
+        }
+    }
 }

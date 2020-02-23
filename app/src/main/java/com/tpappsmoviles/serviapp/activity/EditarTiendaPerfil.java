@@ -371,7 +371,7 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                     final String tipoNotificacion = ((Spinner) customLayout.findViewById(R.id.dn_tipoNotificacion)).getSelectedItem().toString();
                                     final String textoNotificacion = ((EditText) customLayout.findViewById(R.id.dn_textoNotificacion)).getText().toString();
 
-                                    MyFirebaseMessagingService.sendPushNotification(tienda.getNombre(), tipoNotificacion, textoNotificacion);
+                                    MyFirebaseMessagingService.sendPushNotification("ale", tipoNotificacion, textoNotificacion);
                                    //createNotificationChannel();
 
                                    // Log.d(MyReceiver.TAG," CLICK EN BOTON");
