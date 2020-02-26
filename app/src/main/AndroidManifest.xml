@@ -48,20 +48,13 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCuYHwH_F4qzlVLJYDJWIR5FZWS_eN5loA"/>
 
-
-        <service android:name=".activity.MyIntentService" android:exported="true"></service>
-        <receiver android:name=".activity.MyReceiver" android:enabled="true" android:exported="true">
-            <intent-filter>
-                <action android:name="com.tpappsmoviles.serviapp.NOTIFICACION_FAVORITOS"/>
-            </intent-filter>
-        </receiver>
-
         <service
             android:name=".activity.MyFirebaseMessagingService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.tpappsmoviles.serviapp.NOTIFICACION_FAVORITOS"/>
             </intent-filter>
         </service>
 

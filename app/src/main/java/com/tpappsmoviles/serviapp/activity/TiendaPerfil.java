@@ -206,7 +206,7 @@ public class TiendaPerfil extends AppCompatActivity implements OnMapReadyCallbac
                     showToast("Se produjo en error");
                     break;
                 default:
-                    Log.d("SERVIAPP", "Default handler EditarPerfilTienda");
+                    Log.d("SERVIAPP", "Default handler TiendaPerfil");
                     break;
             }
         }

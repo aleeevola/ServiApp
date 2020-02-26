@@ -18,12 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.TiendaRepository;
-import dao.room.FavoritosDao;
-import dao.room.FavoritosRepository;
-import domain.Favoritos;
-import domain.Rubro;
 import domain.Tienda;
-import domain.TiendaFavorita;
 
 public class ListaTiendas extends AppCompatActivity {
     private RecyclerView mRecyclerView;
@@ -48,7 +43,7 @@ private Integer idUsuario;
         idUsuario = extras.getInt("ID_USUARIO");
         //recuperarFavoritos(idUsuario);*/
         listaTiendas.clear();
-        CargarTindas();
+        CargarTiendas();
 
 
     }
@@ -58,13 +53,8 @@ private Integer idUsuario;
         toast1.show();
     }
 
-    public void CargarTindas(){
+    public void CargarTiendas(){
         TiendaRepository.getInstance().listarTienda(miHandler);
-        // TODO: 19/2/2020 ACA TIENE QUE CARGAR LA LISTA DE TIENDAS
-        //esta asi ranciovich para mostrar 2
-        //TiendaRepository.getInstance().buscarTienda(9,miHandler);
-        //TiendaRepository.getInstance().buscarTienda(13,miHandler);
-
     }
 
 

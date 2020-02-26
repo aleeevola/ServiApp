@@ -251,7 +251,7 @@ public class MapaTiendas extends AppCompatActivity implements OnMapReadyCallback
                     //showToast("Se produjo en error");
                     break;
                 default:
-                    Log.d("SERVIAPP", "Default handler EditarPerfilTienda");
+                    Log.d("SERVIAPP", "Default handler MapaTiendas");
                     break;
             }
         }

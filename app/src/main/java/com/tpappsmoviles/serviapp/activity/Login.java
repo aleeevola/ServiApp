@@ -94,11 +94,6 @@ public class Login extends AppCompatActivity {
                                 i1.putExtra("NOMBRE_USUARIO", usuario);
                                 startActivity(i1);
                             }
-
-
-                            Log.d("LOGIN ", "EJECUTO");
-
-
                         }
                     } else {
                         showToast("Ingrese un usuario");
@@ -175,7 +170,7 @@ public class Login extends AppCompatActivity {
                     noExisteTienda(usuario);
                     break;
                 default:
-                    Log.d("DEFAULT BUSCRTIENDA", "handler");
+                    Log.d("APP SERVIAPP", "Default LOGIN");
 
             }
         }

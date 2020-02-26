@@ -44,7 +44,6 @@ import dao.room.FavoritosRepository;
 import domain.Favoritos;
 import domain.TiendaFavorita;
 
-import static com.tpappsmoviles.serviapp.activity.MyReceiver.NOTIFICACION_ID;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnFavoritos;
@@ -63,29 +62,12 @@ public class MainActivity extends AppCompatActivity {
         Button btnFavoritos = (Button) findViewById(R.id.btnFavoritos);
         Button btnBuscarServicios = (Button) findViewById(R.id.btnBuscarServicios);
         Button btnVerMapa = (Button) findViewById(R.id.btnVerMapa);
-        Button btnPrueba = (Button) findViewById(R.id.btn_prueba);
 
         Bundle extras = getIntent().getExtras();
         String nombreUsuario = extras.getString("NOMBRE_USUARIO");
         FavoritosDao pdao= FavoritosRepository.getInstance(MainActivity.this).getFavoritosBD().favoritosDao();
         final Favoritos fv=pdao.loadUsuarioAndTiendasByNombre(nombreUsuario);
 
-        btnPrueba.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view,"ACCION", Snackbar.LENGTH_LONG)
-                        .setAction("Action",null).show();
-            }
-        });
-
-
-        br = new MyReceiver();
-        IntentFilter filtro = new IntentFilter();
-        Intent i = new Intent();
-        createNotificationChannel();
-        filtro.addAction(MyIntentService._NOTIFICACION_FAVORITOS);
-        getApplication().getApplicationContext().registerReceiver(br, filtro);
-        registerReceiver(br,filtro);
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
             @Override
@@ -125,42 +107,11 @@ public class MainActivity extends AppCompatActivity {
                     });
         }
 
-        //   Bundle extras2 = br.getResultExtras(true);
-     //   br.onReceive(this,i);
-//        String tipoNotificacion = extras2.getString("tipoNotificacion");
-//        String textoNotificacion = extras2.getString("textoNotificacion");
-//        Integer idTienda = Integer.parseInt(intent.getStringExtra("idTienda"));
- //       String nombreTienda = extras2.getString("nombreTienda");
 
-/*        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(getApplication().getApplicationContext(), NOTIFICATION_CHANNEL_ID)
-                        .setSmallIcon(R.drawable.logo)
-                        .setContentTitle("EL DE MAIN")
-                        .setContentText("aaaaaaaaaaa")
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-    //                    .setContentIntent(br.)
-                        .setAutoCancel(true);
-
-        Notification n = mBuilder.build();
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplication().getApplicationContext());
-        notificationManager.notify(NOTIFICACION_ID, n);
-
-*/
-        /*
-       // getNotification("Lo q ta escrito aca");
-        br = new MyReceiver();
-        IntentFilter filtro = new IntentFilter();
-        filtro.addAction(EditarTiendaPerfil._NOTIFICACION_FAVORITOS);
-       // getApplication().getApplicationContext().registerReceiver(br, filtro);
-        this.registerReceiver(br,filtro);
-      //  this.registerReceiver(br, filtro);
-*/
 
         btnFavoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //ACA HAY QUE BUSCAR EL USUARIO Y PASARLO PARA TENER LA LISTA DE FAVORITOS DE ESE USUARIO
-
                 Intent intentFavoritos = new Intent(view.getContext() , ListaFavorios.class);
                 intentFavoritos.putExtra("ID_USUARIO", fv.getIdUsuario());
                 startActivity(intentFavoritos);
@@ -170,8 +121,6 @@ public class MainActivity extends AppCompatActivity {
         btnBuscarServicios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 19/2/2020 Lista de tiendas
-                // TODO: 19/2/2020 hacer reci
                 Intent intentTiendas = new Intent(view.getContext() ,ListaTiendas.class);
                 intentTiendas.putExtra("ID_USUARIO", fv.getIdUsuario());
                 startActivity(intentTiendas);
@@ -187,36 +136,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        btnPrueba.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i1 = new Intent(view.getContext(), TiendaPerfil.class);
-                i1.putExtra("ID_USUARIO", fv.getIdUsuario());
-                i1.putExtra("ID_TIENDA", 9);
-                startActivity(i1);
-            }
-        });
-*/
-        //setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 
-
     }
-
-    void verFavoritos(){
-
-    };
-
-    void buscarServicios(){
-
-    };
-
-    void verMapa(){
-
-    };
 
 
 
@@ -233,17 +158,6 @@ public class MainActivity extends AppCompatActivity {
         builder.setChannelId( NOTIFICATION_CHANNEL_ID ) ;
         return builder.build() ;
     }
- /*   private void recibirNotificacion (Notification notification , int delay) {
-        Intent notificationIntent = new Intent( this, MyReceiver.class ) ;
-        notificationIntent.putExtra(MyReceiver.NOTIFICATION_ID , 1 ) ;
-        notificationIntent.putExtra(MyReceiver.NOTIFICATION , notification) ;
-        PendingIntent pendingIntent = PendingIntent. getBroadcast ( this, 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT ) ;
-        long futureInMillis = SystemClock. elapsedRealtime () + delay ;
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context. ALARM_SERVICE ) ;
-        assert alarmManager != null;
-        alarmManager.set(AlarmManager. ELAPSED_REALTIME_WAKEUP , futureInMillis , pendingIntent) ;
-    }
-*/
 
 
     @Override

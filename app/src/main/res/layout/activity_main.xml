@@ -13,17 +13,18 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <Button
-            android:id="@+id/btnFavoritos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/favoritos" />
 
         <Button
             android:id="@+id/btnBuscarServicios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/buscar_servicios" />
+
+        <Button
+            android:id="@+id/btnFavoritos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/favoritos" />
 
         <Button
             android:id="@+id/btnVerMapa"
@@ -37,11 +38,6 @@
             android:layout_height="wrap_content"
             android:text="@string/recibir_notificaciones" />
 
-        <Button
-            android:id="@+id/btn_prueba"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Prueba" />
     </LinearLayout>
 
 </LinearLayout>

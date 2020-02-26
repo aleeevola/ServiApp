@@ -148,34 +148,21 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                 ((Activity) view.getContext()).startActivityForResult(i, RESULT_ZONA_TRABAJO);
             }
         });
-
         btn_enviarnotificacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mFunctions = FirebaseFunctions.getInstance();
                 enviarNotificacion();
-        //        BroadcastReceiver br = new MyReceiver();
-        //        IntentFilter filtro = new IntentFilter();
-        //        Intent i = new Intent();
-//        filtro.getAction(0);
-        //        createNotificationChannel();
-        //        filtro.addAction(MyIntentService._NOTIFICACION_FAVORITOS);
-        //        getApplication().getApplicationContext().registerReceiver(br, filtro);
             }
         });
 
         rubro = (Spinner) findViewById(R.id.ep_rubro);
         adapterRubro = new ArrayAdapter<Rubro>(this, android.R.layout.simple_spinner_item, Rubro.values());
-        //rubro.setAdapter(new ArrayAdapter<Rubro>(this, android.R.layout.simple_spinner_item, Rubro.values()));
         rubro.setAdapter(adapterRubro);
 
         Bundle extras = getIntent().getExtras();
         Integer idTienda = extras.getInt("ID_TIENDA");
-        Log.d("Id recuperado en EditarPerfil", idTienda.toString());
         TiendaRepository.getInstance().buscarTienda(idTienda,miHandler);
-     //   setParametros();  LOS SETEA EN EL HANDLER
-
-
     }
 
     public void setParametros(){
@@ -187,10 +174,8 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //imagen.setImageBitmap(tienda.getImagen());
 
         rubro.setSelection(adapterRubro.getPosition(tienda.getRubro()));
-        //String horario = tienda.getHorarioDeAtencion();
         if(tienda.getHorarioDeAtencion()!=null){
             String horario = tienda.getHorarioDeAtencion();
             horaInicio.setText(horario.substring(0,5));
@@ -200,12 +185,8 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         zonaTrabajo=tienda.getZonaTrabajo();
         lat=tienda.getLat();
         lng=tienda.getLng();
-
-        //poner que muestre el rubro que ya habia seleccionado
-        //este falta tmb
-        //horario.setText(tienda.getHorarioDeAtencion());
         listaServicios=tienda.getServicios();
-        System.out.println("gola"+listaServicios.toString());
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.ep_CardServicios);
         mRecyclerView.setHasFixedSize(true);
@@ -217,7 +198,6 @@ public class EditarTiendaPerfil extends AppCompatActivity {
     }
 
     public void saveParametros(){
-        Log.d("SERVIAPP SAVE PARAMETROS", "ENtro");
         tienda.setNombre(nombre.getText().toString());
         tienda.setRubro((Rubro) rubro.getSelectedItem());
         tienda.setTelefono(Integer.parseInt(telefono.getText().toString()));
@@ -235,16 +215,11 @@ public class EditarTiendaPerfil extends AppCompatActivity {
         tienda.setLng(lng);
 
         TiendaRepository.getInstance().actualizarTienda(tienda, miHandler);
-        //guardar los cambios en tienda y despues actalizarlo en el servidor
-        // A que te referis con guardar lo cambios en tienda? Todos esos set ya los guardarian, no? La funcion de la linea de arriba (actualizarTienda) la guarda en el servidor
 
     }
 
     public void selectImagen(){
-        /*Intent intent=new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        String[] mimeTypes = {"image/jpeg", "image/png"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);*/
+
         Intent intent = new Intent(
                 Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
@@ -349,20 +324,16 @@ public class EditarTiendaPerfil extends AppCompatActivity {
 
     public void enviarNotificacion(){
 
-
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            // Get the layout inflater
-            //LayoutInflater inflater = this.getLayoutInflater();
+
             final View customLayout = getLayoutInflater().inflate(R.layout.dialog_notificacion, null);
 
             // Inflate and set the layout for the dialog
-            // Pass null as the parent view because its going in the dialog layout
+
             builder.setView(customLayout)
-                    // Add action buttons
                     .setPositiveButton("Enviar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            // enviar notificacion broadcast
 
                             Runnable r = new Runnable() {
                                 @Override
@@ -376,25 +347,6 @@ public class EditarTiendaPerfil extends AppCompatActivity {
                                     final String textoNotificacion = ((EditText) customLayout.findViewById(R.id.dn_textoNotificacion)).getText().toString();
 
                                     MyFirebaseMessagingService.sendPushNotification(tienda.getNombre(), tipoNotificacion, textoNotificacion);
-                                   //createNotificationChannel();
-
-                                   // Log.d(MyReceiver.TAG," CLICK EN BOTON");
-                                   // MyIntentService.startActionBaz(EditarTiendaPerfil.this,"HOLA 1","BROADCAST 1");
-/*
-                                    final String tipoNotificacion = ((Spinner) customLayout.findViewById(R.id.dn_tipoNotificacion)).getSelectedItem().toString();
-                                    final String textoNotificacion = ((EditText) customLayout.findViewById(R.id.dn_textoNotificacion)).getText().toString();
-                                    Intent i = new Intent();
-                                    i.putExtra("tipoNotificacion",tipoNotificacion);
-                                    i.putExtra("textoNotificacion",textoNotificacion);
-                                    i.putExtra("idTienda", tienda.getId());
-                                    i.putExtra("nombreTienda", tienda.getNombre());
-                                    i.setAction(MyReceiver._NOTIFICACION_FAVORITOS);
-                                    view.getContext().sendBroadcast(i);
-
-*/
-                                    Log.d("EDITAR TIENDA PERFIL", "despues de send broadcast");
-
-
 
                                 }
                             };
@@ -436,27 +388,5 @@ public class EditarTiendaPerfil extends AppCompatActivity {
             }
         }
     };
-
-/*
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.unregisterReceiver(br);
-    }
-*/
-
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "CANAL1";
-            String description = "MI CANAL 1";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("999", name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager =
-                    getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
 
 }

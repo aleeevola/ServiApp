@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+    private static final String CHANNEL_ID = "1001";
+
     public MyFirebaseMessagingService() {
     }
 
@@ -37,7 +39,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         data.put("nombreTienda", nombreTienda);
         data.put("tipoNotificacion", tipoNotificacion);
         data.put("textoNotificacion", textoNotificacion);
-Log.d("SEND PUSH NOTIFICATION", "tienda: "+nombreTienda);
+    Log.d("SEND PUSH NOTIFICATION", "tienda: "+nombreTienda);
         if(mFunctions == null){
             mFunctions = FirebaseFunctions.getInstance();
         }
@@ -52,7 +54,6 @@ Log.d("SEND PUSH NOTIFICATION", "tienda: "+nombreTienda);
                         // has failed then getResult() will throw an Exception which will be
                         // propagated down.
                         String result = (String) task.getResult().getData();
-                        Log.d("SEND PUSH NOTIFICATION", result);
                         return result;
                     }
                 });
@@ -72,37 +73,45 @@ Log.d("SEND PUSH NOTIFICATION", "tienda: "+nombreTienda);
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        Log.d("token", "onMessageReceiver()");
-        Log.d("token", "size data: "+remoteMessage.getData().size());
         if(remoteMessage.getData().size() >0){
             String nombreTienda = remoteMessage.getData().get("nombreTienda");
             String tipoNotificacion = remoteMessage.getData().get("tipoNotificacion");
             String textoNotificacion = remoteMessage.getData().get("textoNotificacion");
             if(nombreTienda != null && tipoNotificacion != null && textoNotificacion != null){
-                int pedidoId = Integer.parseInt(nombreTienda);
-                sendNotification(pedidoId, tipoNotificacion, textoNotificacion);
+                sendNotification(nombreTienda, tipoNotificacion, textoNotificacion);
             }
         }
     }
 
-    private void sendNotification(int nombreTienda, String tipoNotificacion, String textoNotificacion) {
-        //TODO ir a la actividad ver pedido.
-        Intent intent = new Intent(this, EditarTiendaPerfil.class);
+    private void sendNotification(String nombreTienda, String tipoNotificacion, String textoNotificacion) {
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("nombreTienda", nombreTienda);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, getString(R.string.CHANNEL_ID))
+                new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id))
                         .setSmallIcon(R.drawable.logo)
                         .setContentTitle(nombreTienda+": "+tipoNotificacion)
                         .setContentText(textoNotificacion)
-                        .setAutoCancel(true)
-                        .setContentIntent(pendingIntent);
-
+                        .setAutoCancel(true);
+                //        .setContentIntent(pendingIntent);
+        createNotificationChannel();
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
         notificationManager.notify(0 , notificationBuilder.build());
     }
 
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Notificacion favoritos";
+            String description = "descripcion";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+
+        }
+    }
 }
