@@ -18,18 +18,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/nombreTienda"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/nombre_tienda" />
 
@@ -45,32 +45,31 @@
         </LinearLayout>
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="36dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/rubro"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:text="@string/rubro" />
 
             <Spinner
                 android:id="@+id/r_rubro"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                android:tooltipText="Todos"/>
 
         </LinearLayout>
 
         <Button
             android:id="@+id/btnFiltrar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="end"
+            android:layout_weight="1"
             android:text="@string/filtrar" />
 
     </LinearLayout>
