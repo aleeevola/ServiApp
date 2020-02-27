@@ -20,9 +20,9 @@ exports.addMessage = functions.https.onRequest(async (req, res) => {
  exports.sendNotification = functions.https.onCall((data, context) => {
     console.log("Entra a la funcion")
     const message = {
-        topic: "ale",
-        data:{
-            //nombreTienda: data.nombreTienda,
+        "topic": data.idTienda,
+        "data":{
+          	nombreTienda: data.nombreTienda,
             tipoNotificacion: data.tipoNotificacion,
             textoNotificacion: data.textoNotificacion
         }

@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         for(TiendaFavorita t: fv.getTiendas()) {
-            FirebaseMessaging.getInstance().subscribeToTopic(t.getNombre())
+            FirebaseMessaging.getInstance().subscribeToTopic(((Integer)t.getIdtienda()).toString())
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                                 msg = getString(R.string.msg_subscribe_failed);
                             }
                             Log.d("MainActivity", msg);
-                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -159,13 +159,13 @@ public class MainActivity extends AppCompatActivity {
         return builder.build() ;
     }
 
-
+/*
     @Override
     protected void onDestroy() {
         super.onDestroy();
         this.unregisterReceiver(br);
     }
-
+*/
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -33,9 +33,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static FirebaseFunctions mFunctions;
 
 
-    public static Task<String> sendPushNotification(String nombreTienda, String tipoNotificacion, String textoNotificacion) {
+    public static Task<String> sendPushNotification(String idTienda, String nombreTienda, String tipoNotificacion, String textoNotificacion) {
         // Create the arguments to the callable function.
         Map<String, Object> data = new HashMap<>();
+        data.put("idTienda", idTienda);
         data.put("nombreTienda", nombreTienda);
         data.put("tipoNotificacion", tipoNotificacion);
         data.put("textoNotificacion", textoNotificacion);
