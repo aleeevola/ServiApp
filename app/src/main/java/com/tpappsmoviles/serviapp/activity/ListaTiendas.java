@@ -74,11 +74,11 @@ public class ListaTiendas extends AppCompatActivity {
         btnFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(nombre.toString()!= null){
+                if(nombre.getText().toString()!= null){
                     if(rubro.getSelectedItem()!=null){
-                        filtrarLista(nombre.toString(),(Rubro) rubro.getSelectedItem());
+                        filtrarLista(nombre.getText().toString(),(Rubro) rubro.getSelectedItem());
                     }else{
-                        filtrarLista(nombre.toString());
+                        filtrarLista(nombre.getText().toString());
                     }
                 }else{
                     if(rubro.getSelectedItem()!=null){
@@ -108,7 +108,7 @@ public class ListaTiendas extends AppCompatActivity {
             ArrayList<Tienda> listaNombres = new ArrayList<>();
             ArrayList<Tienda> listaResultado = new ArrayList<>();
             for(Tienda t: listaTiendas){
-                if(t.getNombre().equals(nombreTienda)){
+                if(t.getNombre().equals(nombreTienda) || t.getNombre().contains(nombreTienda)){
                     listaNombres.add(t);
                 }
             }
@@ -117,7 +117,7 @@ public class ListaTiendas extends AppCompatActivity {
                     listaResultado.add(t);
                 }
             }
-
+        listaTiendas.clear();
             listaTiendas = listaResultado;
             mAdapter.notifyDataSetChanged();
     }
@@ -125,10 +125,11 @@ public class ListaTiendas extends AppCompatActivity {
     private void filtrarLista(String nombreTienda) {
         ArrayList<Tienda> listaResultado = new ArrayList<>();
         for(Tienda t: listaTiendas){
-            if(t.getNombre().equals(nombreTienda)){
+            if(t.getNombre().equals(nombreTienda) || t.getNombre().contains(nombreTienda)){
                 listaResultado.add(t);
             }
         }
+        listaTiendas.clear();
         listaTiendas = listaResultado;
         mAdapter.notifyDataSetChanged();
     }
@@ -140,6 +141,7 @@ public class ListaTiendas extends AppCompatActivity {
                 listaResultado.add(t);
             }
         }
+        listaTiendas.clear();
         listaTiendas = listaResultado;
         mAdapter.notifyDataSetChanged();
     }

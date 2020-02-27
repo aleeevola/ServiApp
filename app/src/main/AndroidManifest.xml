@@ -26,7 +26,7 @@
         </activity>
         <activity android:name=".activity.MainActivity" android:parentActivityName=".activity.Login" android:launchMode="singleTask"/>
         <activity android:name=".activity.ListaFavorios"  android:parentActivityName=".activity.MainActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.TiendaPerfil"  android:parentActivityName=".activity.MainActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.TiendaPerfil"  android:parentActivityName=".activity.MainActivity" android:launchMode="singleInstance"/>
         <activity android:name=".activity.EditarTiendaPerfil"  android:parentActivityName=".activity.MainActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.MapaTiendas"  android:parentActivityName=".activity.MainActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.MapaZonaTrabajo"  android:parentActivityName=".activity.EditarTiendaPerfil" android:launchMode="singleTask"/>
