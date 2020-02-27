@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Arrays;
+
 public enum Rubro {
     Mascotas,
     LavadoDeAutos,
@@ -11,4 +13,4 @@ public enum Rubro {
     Electricista,
     Albañil,
     Otros;
-    }
+}

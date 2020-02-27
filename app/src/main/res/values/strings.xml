@@ -20,11 +20,13 @@
     <string name="editar_perfil">Editar perfil</string>
     <string name="notificacion_push">Enviar notificacion push</string>
 
+    <string name="nombre_tienda">Nombre tienda: </string>
     <string name="rubro">Rubro: </string>
     <string name="calificacion">Calificación: </string>
     <string name="telefono">Teléfono: </string>
     <string name="hora_inicio"> 08:30 </string>
     <string name="hora_fin"> 17:30 </string>
+    <string name="filtrar">Filtrar </string>
 
     <string name="texto_notificacion"> Texto notificación: </string>
     <string name="tipo_notificacion"> Tipo notificación: </string>
@@ -39,7 +41,5 @@
         <item>Oferta</item>
         <item>Cambio de horario</item>
     </string-array>
-
-
 
 </resources>
